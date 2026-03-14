@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CX Games: Next Level 🚀</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --meli-yellow: #FFE600;
             --meli-blue: #2D3277;
             --meli-blue-light: #3483FA;
-            --meli-dark: #0B0E1F;
-            --meli-dark-card: #131633;
-            --meli-dark-card-hover: #1a1e42;
+            --meli-dark: #08091a;
+            --meli-dark2: #0d0f24;
+            --meli-dark-card: #12153a;
             --meli-gray: #8B8EA8;
             --meli-green: #00C853;
             --meli-red: #FF5252;
@@ -20,1068 +20,1036 @@
             --meli-purple: #AA66CC;
             --meli-pink: #FF4081;
             --meli-cyan: #00E5FF;
-            --gradient-hero: linear-gradient(135deg, #0B0E1F 0%, #1a1e42 40%, #2D3277 100%);
-            --gradient-yellow: linear-gradient(135deg, #FFE600 0%, #FFC400 100%);
-            --gradient-blue: linear-gradient(135deg, #3483FA 0%, #2D3277 100%);
-            --gradient-fire: linear-gradient(135deg, #FF9100 0%, #FF5252 100%);
-            --gradient-green: linear-gradient(135deg, #00C853 0%, #00E676 100%);
-            --gradient-purple: linear-gradient(135deg, #AA66CC 0%, #7C4DFF 100%);
-            --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
-            --shadow-glow-yellow: 0 0 40px rgba(255,230,0,0.15);
-            --shadow-glow-blue: 0 0 40px rgba(52,131,250,0.15);
-            --radius: 16px;
-            --radius-sm: 10px;
-            --radius-xs: 6px;
+            --radius: 18px;
+            --radius-sm: 12px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html, body { height:100%; overflow:hidden; }
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--meli-dark);
-            color: #E8E8F0;
-            overflow-x: hidden;
-            line-height: 1.6;
+            font-family:'Inter',sans-serif;
+            background:var(--meli-dark);
+            color:#E8E8F0;
         }
 
-        /* NAV */
-        .nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-            background: rgba(11,14,31,0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,230,0,0.08);
-            padding: 0 40px;
-            height: 60px;
-            display: flex; align-items: center; justify-content: space-between;
-            transition: all 0.3s ease;
+        /* ===== SLIDES CONTAINER ===== */
+        .slides-wrapper {
+            position:relative; width:100%; height:100vh;
         }
-        .nav.scrolled { background: rgba(11,14,31,0.95); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--meli-yellow); }
-        .nav-links { display: flex; gap: 8px; }
-        .nav-links a {
-            color: var(--meli-gray); text-decoration: none; font-size: 0.78rem; font-weight: 500;
-            padding: 6px 12px; border-radius: 20px; transition: all 0.3s ease;
+        .slide {
+            position:absolute; top:0; left:0; width:100%; height:100%;
+            display:flex; flex-direction:column; justify-content:center;
+            padding:60px 80px;
+            opacity:0; pointer-events:none;
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+            transform: translateX(60px) scale(0.97);
+            overflow-y:auto;
+            overflow-x:hidden;
         }
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--meli-dark); background: var(--meli-yellow);
+        .slide.active {
+            opacity:1; pointer-events:all;
+            transform: translateX(0) scale(1);
         }
-        .nav-progress { position: absolute; bottom: 0; left: 0; height: 2px; background: var(--gradient-yellow); transition: width 0.3s ease; }
+        .slide.exit-left {
+            opacity:0; transform: translateX(-60px) scale(0.97);
+        }
+        .slide.exit-right {
+            opacity:0; transform: translateX(60px) scale(0.97);
+        }
+        .slide.center { align-items:center; text-align:center; justify-content:center; }
 
-        /* SECTIONS */
-        section {
-            min-height: 100vh;
-            padding: 120px 60px 80px;
-            display: flex; flex-direction: column; justify-content: center;
-            position: relative;
+        /* ===== ANIMATED ELEMENTS ===== */
+        .anim {
+            opacity:0; transform:translateY(35px);
+            transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
         }
-        .section-tag {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px;
-            color: var(--meli-yellow); margin-bottom: 16px;
-            display: flex; align-items: center; gap: 8px;
+        .anim.show { opacity:1; transform:translateY(0); }
+        .anim-left { opacity:0; transform:translateX(-50px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+        .anim-left.show { opacity:1; transform:translateX(0); }
+        .anim-right { opacity:0; transform:translateX(50px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+        .anim-right.show { opacity:1; transform:translateX(0); }
+        .anim-scale { opacity:0; transform:scale(0.7); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+        .anim-scale.show { opacity:1; transform:scale(1); }
+        .anim-rotate { opacity:0; transform:rotate(-10deg) scale(0.8); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+        .anim-rotate.show { opacity:1; transform:rotate(0deg) scale(1); }
+        .anim-blur { opacity:0; filter:blur(15px); transform:translateY(20px); transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease; }
+        .anim-blur.show { opacity:1; filter:blur(0); transform:translateY(0); }
+        .anim-flip { opacity:0; transform:perspective(800px) rotateY(40deg); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+        .anim-flip.show { opacity:1; transform:perspective(800px) rotateY(0deg); }
+
+        .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+        .d4{transition-delay:.4s} .d5{transition-delay:.5s} .d6{transition-delay:.6s}
+        .d7{transition-delay:.7s} .d8{transition-delay:.8s} .d9{transition-delay:.9s}
+        .d10{transition-delay:1s} .d11{transition-delay:1.1s} .d12{transition-delay:1.2s}
+
+        /* ===== NAV CONTROLS ===== */
+        .nav-bar {
+            position:fixed; top:0; left:0; right:0; z-index:1000;
+            height:56px; display:flex; align-items:center; justify-content:space-between;
+            padding:0 30px;
+            background:rgba(8,9,26,0.7); backdrop-filter:blur(20px);
+            border-bottom:1px solid rgba(255,230,0,0.06);
         }
-        .section-tag::before { content: ''; width: 24px; height: 2px; background: var(--meli-yellow); }
-        .section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800;
-            line-height: 1.15; margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff 0%, #c8c8e0 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .nav-logo { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.95rem; color:var(--meli-yellow); }
+        .nav-counter { font-size:0.75rem; color:var(--meli-gray); font-weight:500; }
+        .nav-counter strong { color:#fff; }
+        .progress-track {
+            position:fixed; top:56px; left:0; right:0; height:3px;
+            background:rgba(255,255,255,0.04); z-index:1000;
         }
-        .section-subtitle {
-            font-size: 1.1rem; color: var(--meli-gray); max-width: 650px; margin-bottom: 40px; line-height: 1.7;
+        .progress-fill {
+            height:100%; background:linear-gradient(90deg,var(--meli-yellow),var(--meli-orange));
+            border-radius:0 3px 3px 0;
+            transition:width 0.5s cubic-bezier(0.16,1,0.3,1);
         }
 
-        /* HERO */
-        #hero {
-            background: var(--gradient-hero);
-            text-align: center; align-items: center;
-            padding-top: 160px;
-            overflow: hidden;
+        .slide-controls {
+            position:fixed; bottom:32px; left:50%; transform:translateX(-50%);
+            z-index:1000; display:flex; align-items:center; gap:16px;
         }
-        #hero .section-tag { justify-content: center; }
-        #hero .section-title {
-            font-size: clamp(2.5rem, 5.5vw, 4.5rem); max-width: 900px;
-            background: linear-gradient(135deg, #fff 0%, var(--meli-yellow) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .slide-btn {
+            width:48px; height:48px; border-radius:50%;
+            background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+            color:#fff; font-size:1.1rem; cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+            transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+            backdrop-filter:blur(10px);
         }
-        #hero .section-subtitle { text-align: center; margin: 0 auto 50px; max-width: 700px; font-size: 1.2rem; }
-        .hero-author {
-            display: inline-flex; align-items: center; gap: 12px;
-            background: var(--meli-dark-card); padding: 12px 24px; border-radius: 50px;
-            border: 1px solid rgba(255,230,0,0.15); margin-bottom: 40px;
-        }
-        .hero-author span { font-size: 0.85rem; color: var(--meli-gray); }
-        .hero-author strong { color: #fff; }
-        .hero-stats {
-            display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin-top: 20px;
-        }
-        .hero-stat {
-            text-align: center;
-        }
-        .hero-stat .number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.5rem; font-weight: 800; color: var(--meli-yellow);
-        }
-        .hero-stat .label { font-size: 0.8rem; color: var(--meli-gray); margin-top: 4px; }
-        .hero-particles {
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; overflow: hidden;
-        }
-        .particle {
-            position: absolute; border-radius: 50%; opacity: 0.15;
-            animation: floatParticle 15s infinite ease-in-out;
-        }
-        @keyframes floatParticle {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            33% { transform: translateY(-30px) rotate(120deg); }
-            66% { transform: translateY(20px) rotate(240deg); }
-        }
-        .scroll-indicator {
-            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-            display: flex; flex-direction: column; align-items: center; gap: 8px;
-            animation: bounceDown 2s infinite;
-        }
-        .scroll-indicator span { font-size: 0.7rem; color: var(--meli-gray); letter-spacing: 2px; text-transform: uppercase; }
-        .scroll-arrow { width: 24px; height: 24px; border-right: 2px solid var(--meli-yellow); border-bottom: 2px solid var(--meli-yellow); transform: rotate(45deg); }
-        @keyframes bounceDown { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+        .slide-btn:hover { background:var(--meli-yellow); color:var(--meli-dark); border-color:var(--meli-yellow); transform:scale(1.1); }
+        .slide-btn:active { transform:scale(0.95); }
+        .slide-btn:disabled { opacity:0.2; cursor:default; transform:none; }
+        .slide-btn:disabled:hover { background:rgba(255,255,255,0.06); color:#fff; border-color:rgba(255,255,255,0.1); }
 
-        /* CARDS */
-        .cards-grid {
-            display: grid; gap: 24px; margin-top: 32px;
+        .dots { display:flex; gap:6px; }
+        .dot {
+            width:8px; height:8px; border-radius:50%;
+            background:rgba(255,255,255,0.15);
+            transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+            cursor:pointer;
         }
-        .cards-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-        .cards-2 { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
+        .dot.active { background:var(--meli-yellow); width:28px; border-radius:4px; }
+        .dot:hover:not(.active) { background:rgba(255,255,255,0.3); }
+
+        .key-hint {
+            position:fixed; bottom:90px; left:50%; transform:translateX(-50%);
+            font-size:0.65rem; color:rgba(255,255,255,0.2); letter-spacing:2px; text-transform:uppercase;
+            z-index:999;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        .tag {
+            font-family:'Space Grotesk',sans-serif;
+            font-size:0.7rem; font-weight:600; text-transform:uppercase; letter-spacing:3px;
+            color:var(--meli-yellow);
+            display:inline-flex; align-items:center; gap:8px; margin-bottom:16px;
+        }
+        .tag::before { content:''; width:24px; height:2px; background:var(--meli-yellow); }
+        .title {
+            font-family:'Space Grotesk',sans-serif;
+            font-size:clamp(2rem,4vw,3.2rem); font-weight:800;
+            line-height:1.12; margin-bottom:20px;
+            background:linear-gradient(135deg,#fff 0%,#c0c0d8 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+        }
+        .title-hero {
+            font-size:clamp(2.8rem,6vw,5rem);
+            background:linear-gradient(135deg,#fff 0%,var(--meli-yellow) 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+        }
+        .subtitle { font-size:1.1rem; color:var(--meli-gray); max-width:650px; line-height:1.7; margin-bottom:32px; }
+        .subtitle-center { text-align:center; margin-left:auto; margin-right:auto; }
+        .highlight { -webkit-text-fill-color:var(--meli-yellow); }
+
+        /* ===== CARDS ===== */
+        .grid { display:grid; gap:20px; width:100%; }
+        .g3 { grid-template-columns:repeat(3,1fr); }
+        .g2 { grid-template-columns:repeat(2,1fr); }
+        .g5 { grid-template-columns:repeat(5,1fr); }
         .card {
-            background: var(--meli-dark-card);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: var(--radius);
-            padding: 32px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; overflow: hidden;
+            background:var(--meli-dark-card);
+            border:1px solid rgba(255,255,255,0.04);
+            border-radius:var(--radius); padding:28px;
+            position:relative; overflow:hidden;
+            transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
         }
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255,230,0,0.15);
-            box-shadow: var(--shadow-glow-yellow);
+        .card:hover { transform:translateY(-3px); border-color:rgba(255,230,0,0.12); box-shadow:0 0 40px rgba(255,230,0,0.06); }
+        .card-top { position:absolute; top:0; left:0; right:0; height:3px; }
+        .ct-yellow { background:linear-gradient(90deg,var(--meli-yellow),#FFC400); }
+        .ct-blue { background:linear-gradient(90deg,var(--meli-blue-light),var(--meli-blue)); }
+        .ct-green { background:linear-gradient(90deg,var(--meli-green),#00E676); }
+        .ct-fire { background:linear-gradient(90deg,var(--meli-orange),var(--meli-red)); }
+        .ct-purple { background:linear-gradient(90deg,var(--meli-purple),#7C4DFF); }
+        .ct-pink { background:linear-gradient(90deg,var(--meli-pink),#E040FB); }
+        .card-ico {
+            width:50px; height:50px; border-radius:14px;
+            display:flex; align-items:center; justify-content:center;
+            font-size:1.4rem; margin-bottom:16px;
         }
-        .card-icon {
-            width: 56px; height: 56px; border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; margin-bottom: 20px;
+        .ci-yellow { background:rgba(255,230,0,0.08); }
+        .ci-blue { background:rgba(52,131,250,0.08); }
+        .ci-green { background:rgba(0,200,83,0.08); }
+        .ci-fire { background:rgba(255,82,82,0.08); }
+        .ci-purple { background:rgba(170,102,204,0.08); }
+        .card h3 {
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1.05rem; font-weight:700; color:#fff; margin-bottom:10px;
         }
-        .card-icon.yellow { background: rgba(255,230,0,0.1); }
-        .card-icon.blue { background: rgba(52,131,250,0.1); }
-        .card-icon.green { background: rgba(0,200,83,0.1); }
-        .card-icon.fire { background: rgba(255,82,82,0.1); }
-        .card-icon.purple { background: rgba(170,102,204,0.1); }
-        .card-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 12px;
-        }
-        .card-text { font-size: 0.88rem; color: var(--meli-gray); line-height: 1.7; }
-        .card-accent {
-            position: absolute; top: 0; left: 0; right: 0; height: 3px;
-        }
-        .card-accent.yellow { background: var(--gradient-yellow); }
-        .card-accent.blue { background: var(--gradient-blue); }
-        .card-accent.green { background: var(--gradient-green); }
-        .card-accent.fire { background: var(--gradient-fire); }
-        .card-accent.purple { background: var(--gradient-purple); }
+        .card p { font-size:0.82rem; color:var(--meli-gray); line-height:1.7; }
+        .card strong { color:#c8c8e0; }
 
-        /* BADGE/TAG */
+        /* ===== BADGES ===== */
         .badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-size: 0.7rem; font-weight: 600; padding: 4px 12px;
-            border-radius: 20px; text-transform: uppercase; letter-spacing: 1px;
+            display:inline-flex; align-items:center; gap:5px;
+            font-size:0.65rem; font-weight:600; padding:4px 10px;
+            border-radius:20px; text-transform:uppercase; letter-spacing:1px;
         }
-        .badge.yellow { background: rgba(255,230,0,0.12); color: var(--meli-yellow); }
-        .badge.blue { background: rgba(52,131,250,0.12); color: var(--meli-blue-light); }
-        .badge.green { background: rgba(0,200,83,0.12); color: var(--meli-green); }
-        .badge.fire { background: rgba(255,82,82,0.12); color: var(--meli-red); }
-        .badge.purple { background: rgba(170,102,204,0.12); color: var(--meli-purple); }
-        .badge.new { background: rgba(255,64,129,0.12); color: var(--meli-pink); }
+        .b-yellow { background:rgba(255,230,0,0.1); color:var(--meli-yellow); }
+        .b-blue { background:rgba(52,131,250,0.1); color:var(--meli-blue-light); }
+        .b-green { background:rgba(0,200,83,0.1); color:var(--meli-green); }
+        .b-pink { background:rgba(255,64,129,0.1); color:var(--meli-pink); }
 
-        /* GAME CARDS */
-        .game-card {
-            background: var(--meli-dark-card);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: var(--radius);
-            padding: 0; overflow: hidden;
-            transition: all 0.4s ease;
+        /* ===== GAME CARDS ===== */
+        .game {
+            background:var(--meli-dark-card); border:1px solid rgba(255,255,255,0.04);
+            border-radius:var(--radius); overflow:hidden;
+            transition:all 0.4s ease;
         }
-        .game-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
-        .game-header {
-            padding: 28px 32px 20px;
-            position: relative;
-        }
-        .game-header::after {
-            content: ''; position: absolute; bottom: 0; left: 32px; right: 32px;
-            height: 1px; background: rgba(255,255,255,0.06);
-        }
-        .game-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3rem; font-weight: 900; opacity: 0.06;
-            position: absolute; top: 10px; right: 24px;
+        .game:hover { border-color:rgba(255,230,0,0.1); }
+        .game-head { padding:22px 28px 16px; border-bottom:1px solid rgba(255,255,255,0.04); position:relative; }
+        .game-num {
+            font-family:'Space Grotesk',sans-serif;
+            font-size:2.8rem; font-weight:900; opacity:0.04;
+            position:absolute; top:8px; right:20px; line-height:1;
         }
         .game-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.3rem; font-weight: 700; color: #fff; margin: 8px 0 6px;
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1.1rem; font-weight:700; color:#fff; margin:6px 0 4px;
         }
-        .game-desc { font-size: 0.85rem; color: var(--meli-gray); }
-        .game-body { padding: 24px 32px 28px; }
-        .game-section-title {
-            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 2px; color: var(--meli-yellow); margin-bottom: 14px;
-            display: flex; align-items: center; gap: 8px;
+        .game-desc { font-size:0.8rem; color:var(--meli-gray); }
+        .game-body { padding:18px 28px 22px; }
+        .game-label {
+            font-size:0.65rem; font-weight:700; text-transform:uppercase;
+            letter-spacing:2px; color:var(--meli-yellow); margin-bottom:10px;
         }
-        .strength-list, .improve-list { list-style: none; margin-bottom: 24px; }
-        .strength-list li, .improve-list li {
-            font-size: 0.85rem; color: #c8c8e0; padding: 8px 0;
-            display: flex; align-items: flex-start; gap: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
+        .game ul { list-style:none; margin-bottom:16px; }
+        .game li {
+            font-size:0.8rem; color:#b8b8d0; padding:6px 0;
+            display:flex; align-items:flex-start; gap:8px;
+            border-bottom:1px solid rgba(255,255,255,0.02);
         }
-        .strength-list li::before { content: '✅'; font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; }
-        .improve-list li::before { content: '🚀'; font-size: 0.75rem; flex-shrink: 0; margin-top: 2px; }
+        .game li::before { flex-shrink:0; margin-top:2px; font-size:0.7rem; }
+        .str li::before { content:'✅'; }
+        .imp li::before { content:'🚀'; }
 
-        /* COMPARISON TABLE */
-        .comparison {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px;
+        /* ===== COMPARISON ===== */
+        .comp { display:grid; grid-template-columns:1fr 1fr; gap:24px; width:100%; }
+        .comp-col {
+            background:var(--meli-dark-card); border-radius:var(--radius);
+            padding:30px; border:1px solid rgba(255,255,255,0.04);
         }
-        .comparison-col {
-            background: var(--meli-dark-card);
-            border-radius: var(--radius);
-            padding: 32px; border: 1px solid rgba(255,255,255,0.05);
+        .comp-col.bef { border-top:3px solid var(--meli-gray); }
+        .comp-col.aft { border-top:3px solid var(--meli-yellow); }
+        .comp-col h3 {
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1rem; font-weight:700; margin-bottom:18px;
         }
-        .comparison-col.before { border-top: 3px solid var(--meli-gray); }
-        .comparison-col.after { border-top: 3px solid var(--meli-yellow); }
-        .comparison-col h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem; font-weight: 700; margin-bottom: 20px;
+        .comp-col.bef h3 { color:var(--meli-gray); }
+        .comp-col.aft h3 { color:var(--meli-yellow); }
+        .comp-item {
+            padding:10px 0; font-size:0.82rem;
+            border-bottom:1px solid rgba(255,255,255,0.03);
+            display:flex; align-items:flex-start; gap:8px;
         }
-        .comparison-col.before h3 { color: var(--meli-gray); }
-        .comparison-col.after h3 { color: var(--meli-yellow); }
-        .comparison-item {
-            padding: 12px 0; font-size: 0.85rem;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            display: flex; align-items: flex-start; gap: 10px;
-        }
-        .comparison-col.before .comparison-item { color: var(--meli-gray); }
-        .comparison-col.after .comparison-item { color: #c8c8e0; }
+        .comp-col.bef .comp-item { color:var(--meli-gray); }
+        .comp-col.aft .comp-item { color:#c8c8e0; }
 
-        /* ECOSYSTEM MAP */
-        .ecosystem {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px;
+        /* ===== ECOSYSTEM ===== */
+        .eco-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; width:100%; }
+        .eco-item {
+            background:var(--meli-dark-card); border-radius:var(--radius-sm);
+            padding:22px; text-align:center;
+            border:1px solid rgba(255,255,255,0.04);
+            transition:all 0.3s ease;
         }
-        .eco-card {
-            background: var(--meli-dark-card); border-radius: var(--radius);
-            padding: 24px; border: 1px solid rgba(255,255,255,0.05);
-            text-align: center; transition: all 0.3s ease;
-        }
-        .eco-card:hover { border-color: rgba(255,230,0,0.2); }
-        .eco-card .eco-emoji { font-size: 2rem; margin-bottom: 12px; }
-        .eco-card .eco-dim {
-            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 2px; margin-bottom: 8px;
-        }
-        .eco-card .eco-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 8px;
-        }
-        .eco-card .eco-question { font-size: 0.8rem; color: var(--meli-gray); font-style: italic; }
-        .eco-connectors {
-            grid-column: 1 / -1; text-align: center; padding: 16px;
-            background: rgba(255,230,0,0.04); border-radius: var(--radius);
-            border: 1px dashed rgba(255,230,0,0.15);
-        }
-        .eco-connectors span { font-size: 0.85rem; color: var(--meli-yellow); font-weight: 600; }
-
-        /* RESOURCES */
-        .resource-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px; margin-top: 32px;
-        }
-        .resource-item {
-            background: var(--meli-dark-card); border-radius: var(--radius-sm);
-            padding: 24px; text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .resource-item .r-icon { font-size: 2rem; margin-bottom: 12px; }
-        .resource-item .r-title { font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
-        .resource-item .r-desc { font-size: 0.75rem; color: var(--meli-gray); }
-
-        /* CLOSING */
-        #closing {
-            text-align: center; align-items: center;
-            background: var(--gradient-hero);
-        }
-        #closing .section-title {
-            background: linear-gradient(135deg, var(--meli-yellow) 0%, #fff 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            font-size: clamp(2rem, 4vw, 3.5rem);
-        }
-        .closing-beto { font-size: 4rem; margin-bottom: 20px; }
-
-        /* ANIMATIONS */
-        .fade-in {
-            opacity: 0; transform: translateY(30px);
-            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
-        .fade-in-left {
-            opacity: 0; transform: translateX(-40px);
-            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .fade-in-left.visible { opacity: 1; transform: translateX(0); }
-        .fade-in-right {
-            opacity: 0; transform: translateX(40px);
-            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .fade-in-right.visible { opacity: 1; transform: translateX(0); }
-        .stagger-1 { transition-delay: 0.1s; }
-        .stagger-2 { transition-delay: 0.2s; }
-        .stagger-3 { transition-delay: 0.3s; }
-        .stagger-4 { transition-delay: 0.4s; }
-        .stagger-5 { transition-delay: 0.5s; }
-
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            section { padding: 100px 24px 60px; }
-            .nav { padding: 0 20px; }
-            .nav-links { display: none; }
-            .comparison { grid-template-columns: 1fr; }
-            .ecosystem { grid-template-columns: 1fr 1fr; }
-            .hero-stats { gap: 24px; }
-        }
-        @media (max-width: 600px) {
-            .ecosystem { grid-template-columns: 1fr; }
-            .hero-stat .number { font-size: 2rem; }
+        .eco-item:hover { border-color:rgba(255,230,0,0.15); transform:translateY(-2px); }
+        .eco-item.new-game { border-color:rgba(255,64,129,0.15); }
+        .eco-emoji { font-size:1.8rem; margin-bottom:10px; }
+        .eco-dim { font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:6px; }
+        .eco-name { font-family:'Space Grotesk',sans-serif; font-size:0.9rem; font-weight:700; color:#fff; margin-bottom:6px; }
+        .eco-q { font-size:0.75rem; color:var(--meli-gray); font-style:italic; }
+        .eco-conn {
+            grid-column:1/-1; text-align:center; padding:14px;
+            background:rgba(255,230,0,0.03); border-radius:var(--radius-sm);
+            border:1px dashed rgba(255,230,0,0.12);
+            font-size:0.8rem; color:var(--meli-yellow); font-weight:600;
         }
 
-        /* QUOTE */
-        .quote-block {
-            background: rgba(255,230,0,0.04);
-            border-left: 3px solid var(--meli-yellow);
-            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-            padding: 20px 28px; margin: 24px 0;
-            font-size: 1rem; font-style: italic; color: #c8c8e0; line-height: 1.8;
+        /* ===== QUOTE ===== */
+        .quote {
+            background:rgba(255,230,0,0.03);
+            border-left:3px solid var(--meli-yellow);
+            border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+            padding:18px 24px; margin-top:24px;
+            font-size:0.9rem; font-style:italic; color:#c8c8e0; line-height:1.7;
         }
 
-        /* DIVIDER */
-        .section-divider {
-            width: 60px; height: 3px; border-radius: 3px;
-            background: var(--gradient-yellow); margin-bottom: 32px;
+        /* ===== RESOURCES ===== */
+        .res-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; width:100%; }
+        .res-item {
+            background:var(--meli-dark-card); border-radius:var(--radius-sm);
+            padding:22px 16px; text-align:center;
+            border:1px solid rgba(255,255,255,0.04);
+        }
+        .res-item .ri { font-size:1.8rem; margin-bottom:10px; }
+        .res-item h4 { font-size:0.8rem; font-weight:700; color:#fff; margin-bottom:4px; }
+        .res-item p { font-size:0.7rem; color:var(--meli-gray); }
+
+        /* ===== PINS ===== */
+        .pins { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:20px; }
+        .pin {
+            width:80px; height:80px; border-radius:50%;
+            background:var(--meli-dark-card);
+            border:2px solid rgba(255,230,0,0.12);
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+            cursor:default;
+        }
+        .pin:hover { transform:scale(1.15) rotate(5deg); border-color:var(--meli-yellow); box-shadow:0 0 30px rgba(255,230,0,0.15); }
+        .pin .pe { font-size:1.3rem; }
+        .pin .pl { font-size:0.45rem; color:var(--meli-gray); margin-top:3px; text-align:center; line-height:1.3; }
+
+        /* ===== HERO SPECIFIC ===== */
+        .hero-author {
+            display:inline-flex; align-items:center; gap:10px;
+            background:var(--meli-dark-card); padding:10px 22px; border-radius:50px;
+            border:1px solid rgba(255,230,0,0.1);
+        }
+        .hero-author span { font-size:0.8rem; color:var(--meli-gray); }
+        .hero-author strong { color:#fff; font-size:0.85rem; }
+        .hero-stats { display:flex; gap:48px; justify-content:center; margin-top:28px; }
+        .hero-stat { text-align:center; }
+        .hero-stat .num {
+            font-family:'Space Grotesk',sans-serif;
+            font-size:2.8rem; font-weight:900; color:var(--meli-yellow);
+        }
+        .hero-stat .lbl { font-size:0.75rem; color:var(--meli-gray); margin-top:2px; }
+
+        /* ===== PARTICLES ===== */
+        .particles { position:absolute; top:0; left:0; right:0; bottom:0; pointer-events:none; overflow:hidden; }
+        .pt {
+            position:absolute; border-radius:50%; opacity:0.12;
+            animation:ptFloat 18s infinite ease-in-out;
+        }
+        @keyframes ptFloat {
+            0%,100%{transform:translateY(0) rotate(0)}
+            33%{transform:translateY(-25px) rotate(120deg)}
+            66%{transform:translateY(15px) rotate(240deg)}
         }
 
-        /* PIN SHOWCASE */
-        .pins-row {
-            display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; justify-content: center;
+        /* ===== GLOW BG ===== */
+        .glow {
+            position:absolute; border-radius:50%; filter:blur(120px); opacity:0.07; pointer-events:none;
         }
-        .pin-item {
-            background: var(--meli-dark-card); border-radius: 50%;
-            width: 90px; height: 90px; display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            border: 2px solid rgba(255,230,0,0.15);
-            transition: all 0.3s ease; cursor: default;
+        .glow-yellow { background:var(--meli-yellow); }
+        .glow-blue { background:var(--meli-blue-light); }
+        .glow-pink { background:var(--meli-pink); }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:1100px) {
+            .slide { padding:60px 40px; }
+            .g3 { grid-template-columns:repeat(2,1fr); }
+            .g5,.res-grid { grid-template-columns:repeat(3,1fr); }
+            .eco-grid { grid-template-columns:repeat(2,1fr); }
         }
-        .pin-item:hover { transform: scale(1.1); border-color: var(--meli-yellow); box-shadow: var(--shadow-glow-yellow); }
-        .pin-item .pin-emoji { font-size: 1.5rem; }
-        .pin-item .pin-label { font-size: 0.5rem; color: var(--meli-gray); margin-top: 4px; text-align: center; }
+        @media(max-width:700px) {
+            .slide { padding:60px 20px; }
+            .g3,.g2,.comp { grid-template-columns:1fr; }
+            .g5,.res-grid { grid-template-columns:repeat(2,1fr); }
+            .eco-grid { grid-template-columns:1fr; }
+            .hero-stats { gap:24px; }
+            .hero-stat .num { font-size:2rem; }
+            .nav-bar { padding:0 16px; }
+        }
+
+        /* ===== PULSE ANIM ===== */
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        .pulse { animation:pulse 2s infinite ease-in-out; }
+
+        /* ===== TYPING CURSOR ===== */
+        .cursor::after { content:'|'; animation:blink 1s infinite; color:var(--meli-yellow); }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+        /* ===== SLIDE SPECIFIC BG ===== */
+        .bg-gradient { background:linear-gradient(135deg,#08091a 0%,#12153a 40%,#1a1e52 100%); }
+        .bg-dark { background:#08091a; }
     </style>
 </head>
 <body>
 
-<!-- NAV -->
-    <nav class="nav" id="mainNav">
+    <!-- NAV BAR -->
+    <div class="nav-bar">
         <div class="nav-logo">🐙 CX Games: Next Level</div>
-        <div class="nav-links">
-            <a href="#hero" class="active">Inicio</a>
-            <a href="#opportunity">Oportunidad</a>
-            <a href="#axes">Ejes</a>
-            <a href="#comm">Comunicativo</a>
-            <a href="#value">Valor</a>
-            <a href="#emotional">Emocional</a>
-            <a href="#games">Juegos</a>
-            <a href="#ecosystem">Ecosistema</a>
-            <a href="#before-after">Antes/Después</a>
-            <a href="#resources">Recursos</a>
-        </div>
-        <div class="nav-progress" id="navProgress"></div>
-    </nav>
+        <div class="nav-counter"><strong id="slideNum">1</strong> / <span id="slideTotal">11</span></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
 
-    <!-- SLIDE 1: HERO -->
-    <section id="hero">
-        <div class="hero-particles" id="particles"></div>
-        <div class="section-tag">Propuesta estratégica</div>
-        <h1 class="section-title">CX Games:<br>Next Level 🚀</h1>
-        <p class="section-subtitle">
-            Una propuesta para transformar la experiencia competitiva de +800 representantes. 
-            Más conexión, más identidad, más impacto real.
-        </p>
-        <div class="hero-author">
-            <span>Presentado por</span>
-            <strong>Juan Sebastián Guerrero Rodríguez</strong>
-        </div>
-        <div class="hero-stats">
-            <div class="hero-stat">
-                <div class="number" data-count="800">0</div>
-                <div class="label">+ Representantes</div>
-            </div>
-            <div class="hero-stat">
-                <div class="number" data-count="5">0</div>
-                <div class="label">Juegos integrados</div>
-            </div>
-            <div class="hero-stat">
-                <div class="number" data-count="3">0</div>
-                <div class="label">Ejes estratégicos</div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <span>Scroll</span>
-            <div class="scroll-arrow"></div>
-        </div>
-    </section>
+    <!-- SLIDES -->
+    <div class="slides-wrapper" id="slidesWrapper">
 
-    <!-- SLIDE 2: LA OPORTUNIDAD -->
-    <section id="opportunity">
-        <div class="section-tag fade-in">Punto de partida</div>
-        <h2 class="section-title fade-in">Tenemos una base increíble.<br>Ahora es momento de llevarla al <span style="-webkit-text-fill-color: var(--meli-yellow);">siguiente nivel.</span></h2>
-        <p class="section-subtitle fade-in">CX Games ya cuenta con una estructura sólida. Esta propuesta busca potenciar lo que ya funciona y agregar capas de conexión, visibilidad y emoción.</p>
-        
-        <div class="cards-grid cards-3">
-            <div class="card fade-in stagger-1">
-                <div class="card-accent yellow"></div>
-                <div class="card-icon yellow">✅</div>
-                <div class="card-title">Estructura sólida</div>
-                <div class="card-text">Mini games mensuales, métrica de Orgullo, duelos entre equipos y premios anuales que ya generan competencia.</div>
+        <!-- SLIDE 1: HERO -->
+        <div class="slide center bg-gradient active" data-slide="0">
+            <div class="particles" id="heroParticles"></div>
+            <div class="glow glow-yellow" style="width:500px;height:500px;top:-100px;right:-100px;"></div>
+            <div class="glow glow-blue" style="width:400px;height:400px;bottom:-80px;left:-80px;"></div>
+            <div class="tag anim d1" style="justify-content:center;">Propuesta estratégica 2025</div>
+            <h1 class="title title-hero anim-blur d2">CX Games:<br>Next Level 🚀</h1>
+            <p class="subtitle subtitle-center anim d3">Una propuesta para transformar la experiencia competitiva<br>de +800 representantes en toda la región.</p>
+            <div class="hero-author anim-scale d4">
+                <span>Presentado por</span>
+                <strong>Juan Sebastián Guerrero Rodríguez</strong>
             </div>
-            <div class="card fade-in stagger-2">
-                <div class="card-accent blue"></div>
-                <div class="card-icon blue">👥</div>
-                <div class="card-title">+800 conectados</div>
-                <div class="card-text">Más de 800 representantes en un mismo canal con potencial de interacción y engagement masivo.</div>
-            </div>
-            <div class="card fade-in stagger-3">
-                <div class="card-accent green"></div>
-                <div class="card-icon green">🎯</div>
-                <div class="card-title">Desafíos que funcionan</div>
-                <div class="card-text">Los juegos mensuales ya generan buenos casos y desarrollan habilidades reales en los representantes.</div>
-            </div>
-        </div>
-
-        <div class="quote-block fade-in" style="margin-top: 40px;">
-            💡 <strong>La oportunidad:</strong> Transformar esa participación en una experiencia que los reps vivan todos los días, no solo los viernes. Que cada semana se sienta como un evento, que cada premio se sienta como una experiencia, y que cada rep sepa cómo va y quiera más.
-        </div>
-    </section>
-
-    <!-- SLIDE 3: LOS 3 EJES -->
-    <section id="axes">
-        <div class="section-tag fade-in">Estrategia</div>
-        <h2 class="section-title fade-in">3 ejes para multiplicar<br>el impacto</h2>
-        <p class="section-subtitle fade-in">No es hacer más, es hacer que lo que ya existe se sienta diferente.</p>
-
-        <div class="cards-grid cards-3">
-            <div class="card fade-in stagger-1" style="text-align:center;">
-                <div class="card-accent yellow"></div>
-                <div style="font-size:2.5rem; margin-bottom:16px;">📣</div>
-                <div class="card-title">Comunicativo</div>
-                <div class="card-text">Que cada semana se sienta como un evento. Contenido visual con IA, podcast con Beto, highlights semanales que mantienen viva la llama.</div>
-            </div>
-            <div class="card fade-in stagger-2" style="text-align:center;">
-                <div class="card-accent green"></div>
-                <div style="font-size:2.5rem; margin-bottom:16px;">💰</div>
-                <div class="card-title">Valor Tangible</div>
-                <div class="card-text">Que cada premio se sienta como una experiencia. Menú de premios locales, pines y stickers coleccionables que generan identidad.</div>
-            </div>
-            <div class="card fade-in stagger-3" style="text-align:center;">
-                <div class="card-accent fire"></div>
-                <div style="font-size:2.5rem; margin-bottom:16px;">❤️‍🔥</div>
-                <div class="card-title">Emocional</div>
-                <div class="card-text">Que cada rep sepa cómo va y quiera más. Dashboard en tiempo real, seguimiento semanal, visibilidad total del progreso.</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SLIDE 4: EJE COMUNICATIVO -->
-    <section id="comm">
-        <div class="section-tag fade-in">Eje 1 — Comunicativo</div>
-        <h2 class="section-title fade-in">Que el juego<br>se viva 📣</h2>
-        <p class="section-subtitle fade-in">+800 personas ven el canal. ¿Y si cada publicación se sintiera como el trailer de una película?</p>
-
-        <div class="cards-grid cards-3">
-            <div class="card fade-in stagger-1">
-                <div class="card-accent yellow"></div>
-                <div class="card-icon yellow">🐙</div>
-                <div class="card-title">Podcast "Beto Tips"</div>
-                <div class="card-text">
-                    <strong>Máx 90 segundos, 100% hecho con IA.</strong><br><br>
-                    Beto (nuestra mascota animada) entrevista a una <strong>caricatura personalizada del rep</strong> ganador de la semana. Tips reales con voz IA, fondos temáticos que cambian mes a mes.<br><br>
-                    <span class="badge yellow">Septiembre → Espacio 🚀</span>
-                    <span class="badge blue">Octubre → Halloween 🎃</span>
+            <div class="hero-stats anim d5">
+                <div class="hero-stat">
+                    <div class="num" data-count="800">0</div>
+                    <div class="lbl">+ Representantes</div>
                 </div>
-            </div>
-            <div class="card fade-in stagger-2">
-                <div class="card-accent blue"></div>
-                <div class="card-icon blue">⭐</div>
-                <div class="card-title">El Momento de la Semana</div>
-                <div class="card-text">
-                    Cada lunes se publica el <strong>mejor momento</strong> del viernes anterior en formato de card visual diseñada con IA.<br><br>
-                    No el caso completo, sino un <strong>fragmento específico</strong>: "Mirá cómo María cerró este caso con un cliente furioso".<br><br>
-                    <strong>Enseña y motiva al mismo tiempo.</strong>
+                <div class="hero-stat">
+                    <div class="num" data-count="5">0</div>
+                    <div class="lbl">Juegos integrados</div>
                 </div>
-            </div>
-            <div class="card fade-in stagger-3">
-                <div class="card-accent green"></div>
-                <div class="card-icon green">🎨</div>
-                <div class="card-title">Comunicaciones Reinventadas</div>
-                <div class="card-text">
-                    Transformar las comunicaciones de Slack de <strong>texto con emojis</strong> a <strong>experiencias visuales</strong> hechas con IA.<br><br>
-                    Misma información, pero con imágenes épicas que generan impacto inmediato en +800 personas.<br><br>
-                    <strong>La comunicación debe sentirse como un evento, no como un memo.</strong>
+                <div class="hero-stat">
+                    <div class="num" data-count="3">0</div>
+                    <div class="lbl">Ejes estratégicos</div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- SLIDE 5: EJE VALOR TANGIBLE -->
-    <section id="value">
-        <div class="section-tag fade-in">Eje 2 — Valor Tangible</div>
-        <h2 class="section-title fade-in">Que el premio<br>se sienta 💰</h2>
-        <p class="section-subtitle fade-in">No cambia el presupuesto, cambia la percepción.</p>
+        <!-- SLIDE 2: OPORTUNIDAD -->
+        <div class="slide" data-slide="1">
+            <div class="glow glow-yellow" style="width:350px;height:350px;top:10%;right:5%;"></div>
+            <div class="tag anim">Punto de partida</div>
+            <h2 class="title anim d1">Tenemos una base increíble.<br>Ahora es momento de llevarla al <span class="highlight">siguiente nivel.</span></h2>
+            <p class="subtitle anim d2">CX Games ya cuenta con estructura sólida. Esta propuesta busca potenciar lo que ya funciona y agregar capas de conexión, visibilidad y emoción.</p>
+            <div class="grid g3">
+                <div class="card anim-flip d3">
+                    <div class="card-top ct-yellow"></div>
+                    <div class="card-ico ci-yellow">✅</div>
+                    <h3>Estructura sólida</h3>
+                    <p>Mini games mensuales, métrica de Orgullo, duelos entre equipos y premios anuales que ya generan competencia.</p>
+                </div>
+                <div class="card anim-flip d4">
+                    <div class="card-top ct-blue"></div>
+                    <div class="card-ico ci-blue">👥</div>
+                    <h3>+800 conectados</h3>
+                    <p>Más de 800 representantes en un mismo canal con potencial de engagement masivo aún sin explotar.</p>
+                </div>
+                <div class="card anim-flip d5">
+                    <div class="card-top ct-green"></div>
+                    <div class="card-ico ci-green">🎯</div>
+                    <h3>Desafíos que funcionan</h3>
+                    <p>Los juegos mensuales ya generan buenos casos y desarrollan habilidades reales en los representantes.</p>
+                </div>
+            </div>
+            <div class="quote anim d6">
+                💡 <strong>La oportunidad:</strong> Transformar la participación existente en una experiencia que los reps vivan todos los días, no solo los viernes.
+            </div>
+        </div>
 
-        <div class="cards-grid cards-2">
-            <div class="card fade-in stagger-1">
-                <div class="card-accent green"></div>
-                <div class="card-icon green">🎁</div>
-                <div class="card-title">Menú de Premios Locales</div>
-                <div class="card-text">
-                    Los mismos USD se presentan como <strong>3 opciones reales</strong> elegidas por cada país:<br><br>
-                    🇦🇷 Medialunas para el equipo · Stickers edición limitada · Snack box<br>
+        <!-- SLIDE 3: LOS 3 EJES -->
+        <div class="slide center" data-slide="2">
+            <div class="glow glow-blue" style="width:400px;height:400px;top:20%;left:10%;"></div>
+            <div class="tag anim" style="justify-content:center;">Estrategia</div>
+            <h2 class="title anim-blur d1">3 ejes para multiplicar<br>el impacto</h2>
+            <p class="subtitle subtitle-center anim d2">No es hacer más. Es hacer que lo que ya existe se sienta diferente.</p>
+            <div class="grid g3" style="max-width:1000px;">
+                <div class="card anim-scale d3" style="text-align:center;">
+                    <div class="card-top ct-yellow"></div>
+                    <div style="font-size:2.5rem;margin-bottom:14px;">📣</div>
+                    <h3>Comunicativo</h3>
+                    <p>Que cada semana se sienta como un evento. Contenido visual con IA, podcast con Beto, highlights que mantienen viva la llama.</p>
+                </div>
+                <div class="card anim-scale d4" style="text-align:center;">
+                    <div class="card-top ct-green"></div>
+                    <div style="font-size:2.5rem;margin-bottom:14px;">💰</div>
+                    <h3>Valor Tangible</h3>
+                    <p>Que cada premio se sienta como una experiencia. Menú de premios locales, pines y stickers coleccionables que generan identidad.</p>
+                </div>
+                <div class="card anim-scale d5" style="text-align:center;">
+                    <div class="card-top ct-fire"></div>
+                    <div style="font-size:2.5rem;margin-bottom:14px;">❤️‍🔥</div>
+                    <h3>Emocional</h3>
+                    <p>Que cada rep sepa cómo va y quiera más. Dashboard en tiempo real, seguimiento semanal, visibilidad total del progreso.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: EJE COMUNICATIVO -->
+        <div class="slide" data-slide="3">
+            <div class="glow glow-yellow" style="width:300px;height:300px;bottom:5%;right:5%;"></div>
+            <div class="tag anim">Eje 1 — Comunicativo</div>
+            <h2 class="title anim d1">Que el juego<br>se viva 📣</h2>
+            <p class="subtitle anim d2">+800 personas ven el canal. ¿Y si cada publicación se sintiera como el trailer de una película?</p>
+            <div class="grid g3">
+                <div class="card anim-left d3">
+                    <div class="card-top ct-yellow"></div>
+                    <div class="card-ico ci-yellow">🐙</div>
+                    <h3>Podcast "Beto Tips"</h3>
+                    <p><strong>Máx 90 seg · 100% IA</strong><br><br>Beto entrevista a una <strong>caricatura personalizada del rep</strong> ganador. Tips reales, voz IA, fondos temáticos mes a mes.<br><br>
+                    <span class="badge b-yellow">Sept → Espacio 🚀</span> <span class="badge b-blue">Oct → Halloween 🎃</span></p>
+                </div>
+                <div class="card anim d4">
+                    <div class="card-top ct-blue"></div>
+                    <div class="card-ico ci-blue">⭐</div>
+                    <h3>El Momento de la Semana</h3>
+                    <p>Cada lunes, el <strong>mejor momento</strong> del viernes anterior en card visual con IA.<br><br>No el caso completo, sino el fragmento que inspira: <em>"Mirá cómo María cerró este caso"</em>.<br><br><strong>Enseña y motiva al mismo tiempo.</strong></p>
+                </div>
+                <div class="card anim-right d5">
+                    <div class="card-top ct-green"></div>
+                    <div class="card-ico ci-green">🎨</div>
+                    <h3>Comunicaciones Reinventadas</h3>
+                    <p>De texto con emojis a <strong>experiencias visuales</strong> hechas con IA.<br><br>Misma info, imágenes épicas que impactan a +800 personas.<br><br><strong>La comunicación debe sentirse como un evento, no como un memo.</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: EJE VALOR TANGIBLE -->
+        <div class="slide" data-slide="4">
+            <div class="glow glow-pink" style="width:350px;height:350px;top:15%;left:5%;"></div>
+            <div class="tag anim">Eje 2 — Valor Tangible</div>
+            <h2 class="title anim d1">Que el premio<br>se sienta 💰</h2>
+            <p class="subtitle anim d2">No cambia el presupuesto, cambia la percepción.</p>
+            <div class="grid g2">
+                <div class="card anim-left d3">
+                    <div class="card-top ct-green"></div>
+                    <div class="card-ico ci-green">🎁</div>
+                    <h3>Menú de Premios Locales</h3>
+                    <p>Los mismos USD presentados como <strong>3 opciones reales</strong> por país:<br><br>
+                    🇦🇷 Medialunas para el equipo · Stickers · Snack box<br>
                     🇨🇴 Desayuno sorpresa · Gift card Rappi · Kit de café<br>
-                    🇲🇽 Tacos para el equipo · Café especial · Merch personalizado<br><br>
-                    En vez de "ganaste $10 USD" → <strong>"Tu equipo eligió desayuno sorpresa 🎉"</strong>
+                    🇲🇽 Tacos para el equipo · Café especial · Merch<br><br>
+                    En vez de "ganaste $10" → <strong>"Tu equipo eligió desayuno sorpresa 🎉"</strong></p>
                 </div>
-            </div>
-            <div class="card fade-in stagger-2">
-                <div class="card-accent purple"></div>
-                <div class="card-icon purple">🏅</div>
-                <div class="card-title">Pines & Stickers Coleccionables</div>
-                <div class="card-text">
-                    Diseños <strong>exclusivos mes a mes</strong>, edición limitada. Premio personal O de equipo.<br><br>
+                <div class="card anim-right d4">
+                    <div class="card-top ct-purple"></div>
+                    <div class="card-ico ci-purple">🏅</div>
+                    <h3>Pines & Stickers Coleccionables</h3>
+                    <p>Diseños <strong>exclusivos mes a mes</strong>, edición limitada. Premio personal O de equipo.<br><br>
                     Para lucir en: 💻 Laptop · 🧥 Chaqueta · 🎒 Maleta<br><br>
-                    Fortalece identidad. Genera orgullo visible. Crea cultura de colección.<br><br>
-                    <strong>"Cuando un rep pega un sticker de CX Games en su laptop, está diciendo: yo soy parte de esto."</strong>
+                    <strong>"Cuando un rep pega un sticker en su laptop, está diciendo: yo soy parte de esto."</strong></p>
+                </div>
+            </div>
+            <div class="pins anim-scale d5">
+                <div class="pin"><div class="pe">⭐</div><div class="pl">Viernes<br>con Estilo</div></div>
+                <div class="pin"><div class="pe">🔄</div><div class="pl">Convertidor</div></div>
+                <div class="pin"><div class="pe">🎯</div><div class="pl">Calibrador</div></div>
+                <div class="pin"><div class="pe">📈</div><div class="pl">Coaching<br>al Campo</div></div>
+                <div class="pin"><div class="pe">💀</div><div class="pl">Revertir lo<br>Imposible</div></div>
+                <div class="pin"><div class="pe">🏆</div><div class="pl">Orgullo<br>Anual</div></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: EJE EMOCIONAL -->
+        <div class="slide" data-slide="5">
+            <div class="glow glow-blue" style="width:400px;height:400px;bottom:0;right:0;"></div>
+            <div class="tag anim">Eje 3 — Emocional</div>
+            <h2 class="title anim d1">Que todos sepan<br>cómo van ❤️‍🔥</h2>
+            <p class="subtitle anim d2">La visibilidad genera competencia. La competencia genera excelencia.</p>
+            <div class="grid g2">
+                <div class="card anim-flip d3">
+                    <div class="card-top ct-fire"></div>
+                    <div class="card-ico ci-fire">📊</div>
+                    <h3>Dashboard CX Games en Tiempo Real</h3>
+                    <p>🏆 Ranking de equipos por duelo<br>📈 Evolución semanal de equipos, líderes y reps<br>🌟 Fortalezas de cada caso postulado<br>⚔️ Estado de duelos: quién va ganando<br><br><strong>Los reps ven en qué posición van y qué hacen los otros.</strong></p>
+                </div>
+                <div class="card anim-flip d4">
+                    <div class="card-top ct-yellow"></div>
+                    <div class="card-ico ci-yellow">📢</div>
+                    <h3>Spotlight Semanal</h3>
+                    <p>Cada lunes, resumen automático:<br><br><em>"🔥 Semana 2: Comprador Chat lidera con 3 casos Alto. @María destacó con un cierre épico."</em><br><br><strong>La competencia no espera a fin de mes.</strong></p>
+                </div>
+                <div class="card anim-flip d5">
+                    <div class="card-top ct-blue"></div>
+                    <div class="card-ico ci-blue">🏆</div>
+                    <h3>Muro de Fortalezas</h3>
+                    <p>Cada caso genera una <strong>tarjeta visual con sus fortalezas</strong>. Visible para todos.<br><br><strong>Aprendizaje orgánico: los reps aprenden de los mejores sin que un TL se lo diga.</strong></p>
+                </div>
+                <div class="card anim-flip d6">
+                    <div class="card-top ct-green"></div>
+                    <div class="card-ico ci-green">🎯</div>
+                    <h3>Tracker "Camino al Orgullo"</h3>
+                    <p>Barra de progreso visual por rep hacia el "caso de orgullo" (Alto en los 4 momentos).<br><br><strong>Conecta el juego mensual con el premio anual → cada viernes suma para el grande.</strong></p>
                 </div>
             </div>
         </div>
 
-        <div class="pins-row fade-in" style="margin-top:40px;">
-            <div class="pin-item">
-                <div class="pin-emoji">⭐</div>
-                <div class="pin-label">Viernes<br>con Estilo</div>
-            </div>
-            <div class="pin-item">
-                <div class="pin-emoji">🔄</div>
-                <div class="pin-label">Convertidor</div>
-            </div>
-            <div class="pin-item">
-                <div class="pin-emoji">🎯</div>
-                <div class="pin-label">Calibrador</div>
-            </div>
-            <div class="pin-item">
-                <div class="pin-emoji">📈</div>
-                <div class="pin-label">Coaching<br>al Campo</div>
-            </div>
-            <div class="pin-item">
-                <div class="pin-emoji">💀</div>
-                <div class="pin-label">Revertir lo<br>Imposible</div>
-            </div>
-            <div class="pin-item">
-                <div class="pin-emoji">🏆</div>
-                <div class="pin-label">Orgullo<br>Anual</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SLIDE 6: EJE EMOCIONAL -->
-    <section id="emotional">
-        <div class="section-tag fade-in">Eje 3 — Emocional</div>
-        <h2 class="section-title fade-in">Que todos sepan<br>cómo van ❤️‍🔥</h2>
-        <p class="section-subtitle fade-in">La visibilidad genera competencia. La competencia genera excelencia.</p>
-
-        <div class="cards-grid cards-2">
-            <div class="card fade-in stagger-1">
-                <div class="card-accent fire"></div>
-                <div class="card-icon fire">📊</div>
-                <div class="card-title">Dashboard CX Games en Tiempo Real</div>
-                <div class="card-text">
-                    Tablero visual actualizado semana a semana:<br><br>
-                    🏆 Ranking de equipos por duelo<br>
-                    📈 Evolución semanal de equipos, líderes y reps<br>
-                    🌟 Fortalezas destacadas de cada caso postulado<br>
-                    ⚔️ Estado de duelos: quién va ganando, por cuánto<br><br>
-                    <strong>Los reps ven en qué posición van y qué están haciendo los otros.</strong>
+        <!-- SLIDE 7: JUEGOS EXISTENTES -->
+        <div class="slide" data-slide="6">
+            <div class="tag anim">Los 5 juegos — Existentes</div>
+            <h2 class="title anim d1">Fortalezas + Mejoras<br>de los juegos actuales 💪</h2>
+            <p class="subtitle anim d2">3 juegos sólidos que se potencian con las nuevas capas.</p>
+            <div class="grid g3">
+                <div class="game anim-left d3">
+                    <div class="game-head">
+                        <div class="game-num">01</div>
+                        <span class="badge b-yellow">Colas con LU</span>
+                        <div class="game-name">⭐ Viernes con Estilo</div>
+                        <div class="game-desc">Dominar un momento del Estilo MeLi</div>
+                    </div>
+                    <div class="game-body">
+                        <div class="game-label">💪 Fortalezas</div>
+                        <ul class="str">
+                            <li>Foco en 1 momento específico → especialización</li>
+                            <li>Supervisor elige momento → personalizado</li>
+                            <li>Rep elige su mejor caso → autoconciencia</li>
+                        </ul>
+                        <div class="game-label">🚀 Se potencia con</div>
+                        <ul class="imp">
+                            <li>Imagen IA al inicio del mes con el momento</li>
+                            <li>"Momento de la Semana" cada lunes</li>
+                            <li>Dashboard + Beto Tips + Pin mensual</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="card fade-in stagger-2">
-                <div class="card-accent yellow"></div>
-                <div class="card-icon yellow">📢</div>
-                <div class="card-title">Spotlight Semanal Automatizado</div>
-                <div class="card-text">
-                    Cada lunes, resumen automático del estado de la competencia:<br><br>
-                    <em>"🔥 Semana 2: El equipo de Comprador Chat lidera con 3 casos evaluados como Alto. El rep que más destacó fue @María con un cierre que convirtió un detractor en promotor."</em><br><br>
-                    <strong>La competencia no espera a fin de mes.</strong>
+                <div class="game anim d4">
+                    <div class="game-head">
+                        <div class="game-num">02</div>
+                        <span class="badge b-green">Colas sin LU</span>
+                        <div class="game-name">🔄 Convirtiendo en Promotor</div>
+                        <div class="game-desc">Revertir emociones negativas</div>
+                    </div>
+                    <div class="game-body">
+                        <div class="game-label">💪 Fortalezas</div>
+                        <ul class="str">
+                            <li>Habilidad más difícil: revertir emociones</li>
+                            <li>Incluye reps sin LU → amplia participación</li>
+                            <li>Criterio visible: promotor o expresión positiva</li>
+                        </ul>
+                        <div class="game-label">🚀 Se potencia con</div>
+                        <ul class="imp">
+                            <li>Card ANTES/DESPUÉS con IA</li>
+                            <li>Conversiones visibles en Dashboard</li>
+                            <li>Pin coleccionable "Convertidor"</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="card fade-in stagger-3">
-                <div class="card-accent blue"></div>
-                <div class="card-icon blue">🏆</div>
-                <div class="card-title">Muro de Fortalezas</div>
-                <div class="card-text">
-                    Cada caso evaluado genera una <strong>tarjeta visual con sus fortalezas</strong> identificadas. Visible para todos.<br><br>
-                    Los reps aprenden de los mejores sin que se lo tenga que decir un TL. <strong>Aprendizaje orgánico y continuo.</strong>
-                </div>
-            </div>
-            <div class="card fade-in stagger-4">
-                <div class="card-accent green"></div>
-                <div class="card-icon green">🎯</div>
-                <div class="card-title">Tracker "Camino al Orgullo"</div>
-                <div class="card-text">
-                    Barra de progreso visual por rep mostrando qué tan cerca está de ser un "caso de orgullo" (Alto en los 4 momentos).<br><br>
-                    <strong>Conecta el juego mensual con el premio anual → ahora cada viernes suma para el premio grande.</strong>
+                <div class="game anim-right d5">
+                    <div class="game-head">
+                        <div class="game-num">03</div>
+                        <span class="badge b-blue">Con y sin LU</span>
+                        <div class="game-name">🎯 Calibrando a la Operación</div>
+                        <div class="game-desc">Evaluar casos vs. Champions</div>
+                    </div>
+                    <div class="game-body">
+                        <div class="game-label">💪 Fortalezas</div>
+                        <ul class="str">
+                            <li>Desarrolla ojo analítico del rep</li>
+                            <li>Estándar objetivo (Champions)</li>
+                            <li>Por equipo → colaboración real</li>
+                        </ul>
+                        <div class="game-label">🚀 Se potencia con</div>
+                        <ul class="imp">
+                            <li>Formato quiz: "¿Cuánto le das?"</li>
+                            <li>Duelos en tiempo real en Dashboard</li>
+                            <li>Beto reacciona al resultado semanal</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- SLIDE 7: LOS 5 JUEGOS -->
-    <section id="games">
-        <div class="section-tag fade-in">Los 5 juegos</div>
-        <h2 class="section-title fade-in">Fortalezas + Mejoras +<br>Nuevos Juegos 🎮</h2>
-        <p class="section-subtitle fade-in">3 juegos que ya funcionan potenciados + 2 nuevos juegos que completan el ecosistema.</p>
-
-        <!-- JUEGO 1 -->
-        <div class="game-card fade-in" style="margin-bottom:24px;">
-            <div class="game-header">
-                <div class="game-number">01</div>
-                <span class="badge yellow">Colas con Level Up</span>
-                <div class="game-name">⭐ Viernes con Estilo</div>
-                <div class="game-desc">Impulsar el Estilo MeLi dominando un momento específico elegido por la cola.</div>
-            </div>
-            <div class="game-body">
-                <div class="game-section-title">💪 Fortalezas</div>
-                <ul class="strength-list">
-                    <li>Foco en un momento específico por cola → genera especialización real</li>
-                    <li>El supervisor elige el momento → personaliza según la necesidad del equipo</li>
-                    <li>Cadencia semanal (cada viernes) mantiene ritmo de participación</li>
-                    <li>El rep elige su mejor caso → desarrolla autoconciencia sobre su gestión</li>
-                    <li>Calibración TL + Supervisor asegura evaluación objetiva</li>
-                </ul>
-                <div class="game-section-title">🚀 Se potencia con</div>
-                <ul class="improve-list">
-                    <li>Comunicación IA al inicio del mes: imagen épica anunciando el momento de la cola</li>
-                    <li>"El Momento de la Semana" cada lunes → el juego no muere el viernes</li>
-                    <li>Dashboard: participación por equipo en tiempo real</li>
-                    <li>Beto Tips: el rep ganador aparece en el podcast mensual</li>
-                    <li>Pin/Sticker edición mensual como premio de identidad</li>
-                </ul>
+        <!-- SLIDE 8: NUEVOS JUEGOS -->
+        <div class="slide" data-slide="7">
+            <div class="glow glow-pink" style="width:400px;height:400px;top:10%;right:5%;"></div>
+            <div class="tag anim">Los 5 juegos — Nuevos</div>
+            <h2 class="title anim d1">2 nuevos juegos que completan<br>el ecosistema 🆕</h2>
+            <p class="subtitle anim d2">Cubren las dimensiones que faltaban: evolución personal e impacto en métricas reales.</p>
+            <div class="grid g2">
+                <div class="game anim-left d3" style="border-color:rgba(255,64,129,0.15);">
+                    <div class="game-head" style="background:rgba(255,64,129,0.02);">
+                        <div class="game-num">04</div>
+                        <span class="badge b-pink">🆕 Nuevo</span>
+                        <div class="game-name">📈 Del Coaching al Campo</div>
+                        <div class="game-desc">Lo que trabajaste con tu líder se convierte en tu mayor fortaleza.</div>
+                    </div>
+                    <div class="game-body">
+                        <div class="game-label">🎯 Concepto</div>
+                        <ul class="str">
+                            <li>1 vez al mes: postula 1 caso donde aplicó algo trabajado en coaching</li>
+                            <li><strong>Gana la mejor transformación de oportunidad</strong> en herramienta diferencial</li>
+                            <li>Cierra el ciclo: Coaching → Práctica → Resultado → Reconocimiento</li>
+                            <li>Las oportunidades son escalones, no etiquetas</li>
+                        </ul>
+                        <div class="game-label">📋 Dinámica</div>
+                        <ul class="imp">
+                            <li>Rep postula: ¿Qué oportunidad trabajé? → ¿Cómo la apliqué?</li>
+                            <li>TL confirma que fue trabajada en coaching</li>
+                            <li>Calibración por TLs + Supervisores</li>
+                            <li>Premio: $10 USD + Pin "Del Coaching al Campo"</li>
+                            <li>Reconocimiento al TL en la comunicación</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="game anim-right d4" style="border-color:rgba(255,64,129,0.15);">
+                    <div class="game-head" style="background:rgba(255,64,129,0.02);">
+                        <div class="game-num">05</div>
+                        <span class="badge b-pink">🆕 Nuevo</span>
+                        <div class="game-name">💀➡️⭐ Revertir lo Imposible</div>
+                        <div class="game-desc">Los procesos que todos temen son donde más brilla el Estilo MeLi.</div>
+                    </div>
+                    <div class="game-body">
+                        <div class="game-label">🎯 Concepto</div>
+                        <ul class="str">
+                            <li>CDUs/procesos históricamente detractores en NPS → convertirlos en promotor</li>
+                            <li>Cada equipo tiene sus propios procesos difíciles, el rep sabe cuáles son</li>
+                            <li>Casos ganadores = material de referencia para toda la operación</li>
+                            <li>Impacta directamente la métrica real de NPS</li>
+                        </ul>
+                        <div class="game-label">📋 Dinámica</div>
+                        <ul class="imp">
+                            <li>Rep postula: ¿Qué proceso? → ¿Por qué es difícil? → ¿Qué hice diferente?</li>
+                            <li>TL valida que el proceso es desafiante + resultado promotor</li>
+                            <li>General y escalable: funciona para todos los equipos</li>
+                            <li>Premio: $10 USD + Pin "Revertir lo Imposible"</li>
+                            <li>Casos ganadores compartidos como referentes</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- JUEGO 2 -->
-        <div class="game-card fade-in" style="margin-bottom:24px;">
-            <div class="game-header">
-                <div class="game-number">02</div>
-                <span class="badge green">Colas sin Level Up</span>
-                <div class="game-name">🔄 Convirtiendo en Promotor</div>
-                <div class="game-desc">Revertir emociones negativas del usuario y transformarlo en promotor.</div>
-            </div>
-            <div class="game-body">
-                <div class="game-section-title">💪 Fortalezas</div>
-                <ul class="strength-list">
-                    <li>Apunta a la habilidad más difícil: revertir emociones negativas</li>
-                    <li>Incluye a reps más nuevos (sin Level Up) → amplia participación</li>
-                    <li>Criterio de éxito visible: encuesta promotora o expresión positiva explícita</li>
-                    <li>Hasta 3 casos por semana → incentiva buscar activamente estos momentos</li>
-                    <li>Conecta empatía + resolución + conexión: los 3 pilares de atención</li>
-                </ul>
-                <div class="game-section-title">🚀 Se potencia con</div>
-                <ul class="improve-list">
-                    <li>Card visual ANTES/DESPUÉS con IA: storytelling de la transformación emocional</li>
-                    <li>"El Momento de la Semana" puede incluir conversiones épicas</li>
-                    <li>Dashboard: cuántas conversiones lleva cada equipo → competencia visible</li>
-                    <li>Pin coleccionable "Convertidor" para el ganador</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- JUEGO 3 -->
-        <div class="game-card fade-in" style="margin-bottom:24px;">
-            <div class="game-header">
-                <div class="game-number">03</div>
-                <span class="badge blue">Equipos con y sin LU</span>
-                <div class="game-name">🎯 Calibrando a la Operación</div>
-                <div class="game-desc">Desarrollar el ojo analítico evaluando casos contra el estándar de los Champions.</div>
-            </div>
-            <div class="game-body">
-                <div class="game-section-title">💪 Fortalezas</div>
-                <ul class="strength-list">
-                    <li>Desarrolla el ojo analítico: el rep no solo ejecuta, también evalúa</li>
-                    <li>Compite contra un estándar objetivo (Champions) → no es subjetivo</li>
-                    <li>Es por equipo → fomenta colaboración y discusión entre reps</li>
-                    <li>El 50% mínimo de participación moviliza al equipo completo</li>
-                    <li>Mide algo único: qué tanto el rep ENTIENDE el Estilo MeLi</li>
-                </ul>
-                <div class="game-section-title">🚀 Se potencia con</div>
-                <ul class="improve-list">
-                    <li>Formato quiz/predicción: "¿Cuánto le das a este caso?" → se siente juego, no tarea</li>
-                    <li>Dashboard de duelos en tiempo real: Equipo A 🆚 Equipo B semana a semana</li>
-                    <li>Resultado semanal parcial: "Tu equipo estuvo a 3 puntos de los Champions"</li>
-                    <li>Beto reacciona al resultado semanal con humor</li>
-                </ul>
+        <!-- SLIDE 9: ECOSISTEMA -->
+        <div class="slide center" data-slide="8">
+            <div class="tag anim" style="justify-content:center;">Visión integrada</div>
+            <h2 class="title anim-blur d1">Cómo conviven<br>los 5 juegos 🧩</h2>
+            <p class="subtitle subtitle-center anim d2">Cada juego toca una dimensión diferente del desarrollo del representante.</p>
+            <div class="eco-grid" style="max-width:900px;">
+                <div class="eco-item anim-scale d3">
+                    <div class="eco-emoji">⭐</div>
+                    <div class="eco-dim" style="color:var(--meli-yellow);">Técnica</div>
+                    <div class="eco-name">Viernes con Estilo</div>
+                    <div class="eco-q">¿Domino los momentos del Estilo MeLi?</div>
+                </div>
+                <div class="eco-item anim-scale d4">
+                    <div class="eco-emoji">🔄</div>
+                    <div class="eco-dim" style="color:var(--meli-green);">Emocional</div>
+                    <div class="eco-name">Convirtiendo en Promotor</div>
+                    <div class="eco-q">¿Puedo revertir la peor situación?</div>
+                </div>
+                <div class="eco-item anim-scale d5">
+                    <div class="eco-emoji">🎯</div>
+                    <div class="eco-dim" style="color:var(--meli-blue-light);">Analítica</div>
+                    <div class="eco-name">Calibrando a la Operación</div>
+                    <div class="eco-q">¿Entiendo qué es una buena atención?</div>
+                </div>
+                <div class="eco-item new-game anim-scale d6">
+                    <div class="eco-emoji">📈</div>
+                    <div class="eco-dim" style="color:var(--meli-pink);">Evolución 🆕</div>
+                    <div class="eco-name">Del Coaching al Campo</div>
+                    <div class="eco-q">¿Estoy creciendo con mi líder?</div>
+                </div>
+                <div class="eco-item new-game anim-scale d7">
+                    <div class="eco-emoji">💀</div>
+                    <div class="eco-dim" style="color:var(--meli-pink);">Impacto Real 🆕</div>
+                    <div class="eco-name">Revertir lo Imposible</div>
+                    <div class="eco-q">¿Puedo ganar donde todos pierden?</div>
+                </div>
+                <div class="eco-item anim-scale d8" style="opacity:0;pointer-events:none;border:none;background:transparent;"></div>
+                <div class="eco-conn anim d9">
+                    📊 Dashboard · 🐙 Beto Tips · 🏅 Pines · ⭐ Momentos · 📢 Spotlight
+                </div>
             </div>
         </div>
 
-        <!-- JUEGO 4: NUEVO -->
-        <div class="game-card fade-in" style="margin-bottom:24px; border: 1px solid rgba(255,64,129,0.2);">
-            <div class="game-header" style="background: rgba(255,64,129,0.03);">
-                <div class="game-number">04</div>
-                <span class="badge new">🆕 Nuevo juego</span>
-                <div class="game-name">📈 Del Coaching al Campo</div>
-                <div class="game-desc">Demuestra que lo que trabajaste con tu líder se convierte en tu mayor fortaleza.</div>
-            </div>
-            <div class="game-body">
-                <div class="game-section-title">🎯 Concepto</div>
-                <ul class="strength-list">
-                    <li>Una vez al mes, el rep postula 1 caso donde aplicó algo específico trabajado en coaching</li>
-                    <li><strong>Gana el caso con la mejor transformación de oportunidad</strong> → se evalúa qué tan bien la convirtió en herramienta diferencial</li>
-                    <li>El TL valida que fue una oportunidad trabajada en conjunto</li>
-                    <li>Cierra el ciclo: Coaching → Práctica → Resultado visible → Reconocimiento</li>
-                    <li>Demuestra que las oportunidades son escalones, no etiquetas</li>
-                </ul>
-                <div class="game-section-title">📋 Dinámica</div>
-                <ul class="improve-list">
-                    <li>Rep postula con contexto: ¿Qué oportunidad trabajé? → ¿Cómo la apliqué?</li>
-                    <li>TL confirma que fue trabajada en coaching</li>
-                    <li>TLs + Supervisores calibran: mejor transformación por canal</li>
-                    <li>Premio: Cupón $10 USD + Pin edición "Del Coaching al Campo"</li>
-                    <li>Reconocimiento al TL del rep ganador en la comunicación</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- JUEGO 5: NUEVO -->
-        <div class="game-card fade-in" style="border: 1px solid rgba(255,64,129,0.2);">
-            <div class="game-header" style="background: rgba(255,64,129,0.03);">
-                <div class="game-number">05</div>
-                <span class="badge new">🆕 Nuevo juego</span>
-                <div class="game-name">💀➡️⭐ Revertir lo Imposible</div>
-                <div class="game-desc">Los procesos que todos temen son donde más brilla nuestro Estilo MeLi.</div>
-            </div>
-            <div class="game-body">
-                <div class="game-section-title">🎯 Concepto</div>
-                <ul class="strength-list">
-                    <li>Cada rep tiene CDUs/procesos que históricamente generan detractores en NPS</li>
-                    <li>El desafío: lograr que un caso de un proceso históricamente detractor termine con un <strong>promotor real</strong></li>
-                    <li>No se especifican CDUs concretos → cada equipo tiene sus propios procesos difíciles, el rep sabe cuáles son</li>
-                    <li>Los casos ganadores se convierten en material de referencia para toda la operación</li>
-                    <li>Impacta directamente la métrica real de NPS</li>
-                </ul>
-                <div class="game-section-title">📋 Dinámica</div>
-                <ul class="improve-list">
-                    <li>Rep postula con contexto: ¿Qué proceso fue? → ¿Por qué es difícil? → ¿Qué hice diferente?</li>
-                    <li>TL valida que el proceso es históricamente desafiante y el resultado fue promotor</li>
-                    <li>TLs + Supervisores calibran la calidad de la gestión</li>
-                    <li>Premio: Cupón $10 USD + Pin edición "Revertir lo Imposible"</li>
-                    <li>General y escalable: funciona para todos los equipos sin importar qué procesos manejen</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- SLIDE 8: ECOSISTEMA -->
-    <section id="ecosystem">
-        <div class="section-tag fade-in">Visión integrada</div>
-        <h2 class="section-title fade-in">Cómo conviven<br>los 5 juegos 🧩</h2>
-        <p class="section-subtitle fade-in">Cada juego toca una dimensión diferente del desarrollo del representante.</p>
-
-        <div class="ecosystem">
-            <div class="eco-card fade-in stagger-1">
-                <div class="eco-emoji">⭐</div>
-                <div class="eco-dim" style="color: var(--meli-yellow);">Técnica</div>
-                <div class="eco-name">Viernes con Estilo</div>
-                <div class="eco-question">¿Domino los momentos del Estilo MeLi?</div>
-            </div>
-            <div class="eco-card fade-in stagger-2">
-                <div class="eco-emoji">🔄</div>
-                <div class="eco-dim" style="color: var(--meli-green);">Emocional</div>
-                <div class="eco-name">Convirtiendo en Promotor</div>
-                <div class="eco-question">¿Puedo revertir la peor situación?</div>
-            </div>
-            <div class="eco-card fade-in stagger-3">
-                <div class="eco-emoji">🎯</div>
-                <div class="eco-dim" style="color: var(--meli-blue-light);">Analítica</div>
-                <div class="eco-name">Calibrando a la Operación</div>
-                <div class="eco-question">¿Entiendo qué es una buena atención?</div>
-            </div>
-            <div class="eco-card fade-in stagger-4" style="border-color: rgba(255,64,129,0.2);">
-                <div class="eco-emoji">📈</div>
-                <div class="eco-dim" style="color: var(--meli-pink);">Evolución</div>
-                <div class="eco-name">Del Coaching al Campo 🆕</div>
-                <div class="eco-question">¿Estoy creciendo con mi líder?</div>
-            </div>
-            <div class="eco-card fade-in stagger-5" style="border-color: rgba(255,64,129,0.2);">
-                <div class="eco-emoji">💀</div>
-                <div class="eco-dim" style="color: var(--meli-pink);">Impacto Real</div>
-                <div class="eco-name">Revertir lo Imposible 🆕</div>
-                <div class="eco-question">¿Puedo ganar donde todos pierden?</div>
-            </div>
-            <div class="eco-card fade-in stagger-5" style="opacity:0; pointer-events:none;"></div>
-            <div class="eco-connectors fade-in">
-                <span>📊 Dashboard &nbsp;·&nbsp; 🐙 Beto Tips &nbsp;·&nbsp; 🏅 Pines Coleccionables &nbsp;·&nbsp; ⭐ Momento de la Semana &nbsp;·&nbsp; 📢 Spotlight Semanal</span>
+        <!-- SLIDE 10: ANTES Y DESPUÉS -->
+        <div class="slide" data-slide="9">
+            <div class="glow glow-yellow" style="width:400px;height:400px;bottom:10%;left:50%;transform:translateX(-50%);"></div>
+            <div class="tag anim">Transformación</div>
+            <h2 class="title anim d1">El antes y<br>el después ✨</h2>
+            <p class="subtitle anim d2">Misma base, diferente experiencia.</p>
+            <div class="comp">
+                <div class="comp-col bef anim-left d3">
+                    <h3>📋 Hoy</h3>
+                    <div class="comp-item">📝 El rep envía su caso el viernes y espera hasta fin de mes</div>
+                    <div class="comp-item">💬 La comunicación es texto con emojis en Slack</div>
+                    <div class="comp-item">💵 El premio son $10 USD sin contexto</div>
+                    <div class="comp-item">👤 El juego se siente individual</div>
+                    <div class="comp-item">📅 Los mejores casos se conocen a fin de mes</div>
+                    <div class="comp-item">🔇 El coaching queda entre el rep y su líder</div>
+                    <div class="comp-item">😰 Los CDUs difíciles se evitan</div>
+                </div>
+                <div class="comp-col aft anim-right d4">
+                    <h3>🚀 Next Level</h3>
+                    <div class="comp-item">⚡ El rep ve su progreso en tiempo real toda la semana</div>
+                    <div class="comp-item">🎨 Las comunicaciones son experiencias visuales con IA</div>
+                    <div class="comp-item">🎁 El premio es una experiencia elegida + un pin para lucir</div>
+                    <div class="comp-item">🤝 El juego se siente como un equipo que vibra junto</div>
+                    <div class="comp-item">⭐ Los mejores momentos se celebran cada lunes</div>
+                    <div class="comp-item">📈 Lo trabajado en coaching se vuelve caso ganador visible</div>
+                    <div class="comp-item">💀➡️⭐ Los CDUs difíciles son la oportunidad de brillar</div>
+                </div>
             </div>
         </div>
 
-        <div class="quote-block fade-in" style="margin-top: 40px;">
-            🔗 <strong>Todo conectado:</strong> Los 5 juegos alimentan el Dashboard, el Podcast Beto destaca a los ganadores, los pines generan identidad, y el Spotlight Semanal mantiene viva la competencia entre cada viernes.
-        </div>
-    </section>
+        <!-- SLIDE 11: RECURSOS + CIERRE -->
+        <div class="slide center" data-slide="10">
+            <div class="glow glow-yellow" style="width:500px;height:500px;top:-50px;right:-100px;"></div>
+            <div class="glow glow-blue" style="width:400px;height:400px;bottom:-80px;left:-80px;"></div>
+            <div class="tag anim" style="justify-content:center;">Implementación</div>
+            <h2 class="title anim d1">¿Qué necesitamos? 🛠️</h2>
+            <div class="res-grid anim d2" style="max-width:900px; margin-bottom:40px;">
+                <div class="res-item">
+                    <div class="ri">🤖</div>
+                    <h4>IA Generativa</h4>
+                    <p>Imágenes, caricaturas, voz Beto, comunicaciones</p>
+                </div>
+                <div class="res-item">
+                    <div class="ri">📊</div>
+                    <h4>Dashboard</h4>
+                    <p>Tracker en tiempo real, ranking, duelos</p>
+                </div>
+                <div class="res-item">
+                    <div class="ri">🌎</div>
+                    <h4>Equipos por país</h4>
+                    <p>3 ideas de premios locales por país</p>
+                </div>
+                <div class="res-item">
+                    <div class="ri">🏅</div>
+                    <h4>Pines & Stickers</h4>
+                    <p>Diseño mensual + producción local</p>
+                </div>
+                <div class="res-item">
+                    <div class="ri">✅</div>
+                    <h4>Alineación</h4>
+                    <p>Coordinación con squad CX Games</p>
+                </div>
+            </div>
 
-    <!-- SLIDE 9: ANTES Y DESPUÉS -->
-    <section id="before-after">
-        <div class="section-tag fade-in">Transformación</div>
-        <h2 class="section-title fade-in">El antes y<br>el después ✨</h2>
-        <p class="section-subtitle fade-in">Misma base, diferente experiencia.</p>
-
-        <div class="comparison fade-in">
-            <div class="comparison-col before">
-                <h3>📋 Hoy</h3>
-                <div class="comparison-item">📝 El rep envía su caso el viernes y espera hasta fin de mes</div>
-                <div class="comparison-item">💬 La comunicación es texto con emojis en Slack</div>
-                <div class="comparison-item">💵 El premio son $10 USD sin contexto</div>
-                <div class="comparison-item">👤 El juego se siente individual</div>
-                <div class="comparison-item">📅 Los mejores casos se conocen a fin de mes</div>
-                <div class="comparison-item">🔇 El coaching queda entre el rep y su líder</div>
-                <div class="comparison-item">😰 Los CDUs difíciles se evitan o se sufren</div>
-            </div>
-            <div class="comparison-col after">
-                <h3>🚀 Next Level</h3>
-                <div class="comparison-item">⚡ El rep ve su progreso en tiempo real toda la semana</div>
-                <div class="comparison-item">🎨 Las comunicaciones son experiencias visuales con IA</div>
-                <div class="comparison-item">🎁 El premio es una experiencia elegida + un pin para lucir</div>
-                <div class="comparison-item">🤝 El juego se siente como un equipo que vibra junto</div>
-                <div class="comparison-item">⭐ Los mejores momentos se celebran cada lunes</div>
-                <div class="comparison-item">📈 Lo trabajado en coaching se convierte en caso ganador visible</div>
-                <div class="comparison-item">💀➡️⭐ Los CDUs difíciles son la oportunidad de brillar</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SLIDE 10: RECURSOS -->
-    <section id="resources">
-        <div class="section-tag fade-in">Implementación</div>
-        <h2 class="section-title fade-in">¿Qué necesitamos? 🛠️</h2>
-        <p class="section-subtitle fade-in">Recursos concretos para hacer realidad cada eje.</p>
-
-        <div class="resource-grid fade-in">
-            <div class="resource-item">
-                <div class="r-icon">🤖</div>
-                <div class="r-title">IA Generativa</div>
-                <div class="r-desc">Imágenes, caricaturas de reps, voz para Beto, comunicaciones visuales</div>
-            </div>
-            <div class="resource-item">
-                <div class="r-icon">📊</div>
-                <div class="r-title">Dashboard</div>
-                <div class="r-desc">Desarrollo del tracker en tiempo real con ranking y duelos</div>
-            </div>
-            <div class="resource-item">
-                <div class="r-icon">🌎</div>
-                <div class="r-title">Equipos por país</div>
-                <div class="r-desc">3 ideas de premios locales por país para el menú de experiencias</div>
-            </div>
-            <div class="resource-item">
-                <div class="r-icon">🏅</div>
-                <div class="r-title">Pines & Stickers</div>
-                <div class="r-desc">Diseño mensual con IA + producción local por país</div>
-            </div>
-            <div class="resource-item">
-                <div class="r-icon">✅</div>
-                <div class="r-title">Alineación</div>
-                <div class="r-desc">Aprobación y coordinación con el squad de CX Games</div>
+            <div style="margin-top:20px;" class="anim-scale d5">
+                <div style="font-size:4rem; margin-bottom:16px;">🐙</div>
+                <h2 class="title anim d6" style="font-size:clamp(1.8rem,3.5vw,2.8rem); background:linear-gradient(135deg,var(--meli-yellow) 0%,#fff 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+                    CX Games ya es increíble.<br>Esta propuesta es para que<br>cada rep lo sienta así.
+                </h2>
+                <p class="anim d7" style="font-size:1.1rem; color:var(--meli-gray); margin-top:12px;">
+                    Más conexión. Más identidad. Más impacto real.<br>
+                    <strong style="color:var(--meli-yellow); font-size:1.3rem;">Let's play. 🎮</strong>
+                </p>
+                <div class="hero-author anim d8" style="margin-top:24px;">
+                    <span>Propuesta por</span>
+                    <strong>Juan Sebastián Guerrero Rodríguez</strong>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- SLIDE 11: CIERRE -->
-    <section id="closing">
-        <div class="closing-beto fade-in">🐙</div>
-        <h2 class="section-title fade-in">CX Games ya es increíble.<br>Esta propuesta es para que<br>cada rep lo sienta así.</h2>
-        <p class="section-subtitle fade-in" style="text-align:center; margin: 20px auto;">
-            Más conexión. Más identidad. Más impacto real.<br>
-            <strong style="color: var(--meli-yellow);">Let's play. 🎮</strong>
-        </p>
-        <div class="hero-author fade-in" style="margin-top:30px;">
-            <span>Propuesta por</span>
-            <strong>Juan Sebastián Guerrero Rodríguez</strong>
-        </div>
-    </section>
+    </div><!-- /slides-wrapper -->
 
-<script>
+    <!-- CONTROLS -->
+    <div class="slide-controls">
+        <button class="slide-btn" id="btnPrev" disabled>◀</button>
+        <div class="dots" id="dotsContainer"></div>
+        <button class="slide-btn" id="btnNext">▶</button>
+    </div>
+    <div class="key-hint">← → Flechas para navegar</div>
+
+    <script>
+    (function(){
+        // ===== CONFIG =====
+        const slides = document.querySelectorAll('.slide');
+        const total = slides.length;
+        let current = 0;
+        let isAnimating = false;
+        const ANIM_DURATION = 600;
+
+        // ===== DOM =====
+        const slideNum = document.getElementById('slideNum');
+        const slideTotal = document.getElementById('slideTotal');
+        const progressFill = document.getElementById('progressFill');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const dotsContainer = document.getElementById('dotsContainer');
+
+        slideTotal.textContent = total;
+
+        // ===== CREATE DOTS =====
+        for(let i=0;i<total;i++){
+            const d = document.createElement('div');
+            d.className = 'dot' + (i===0?' active':'');
+            d.addEventListener('click',()=>goTo(i));
+            dotsContainer.appendChild(d);
+        }
+        const dots = document.querySelectorAll('.dot');
+
         // ===== PARTICLES =====
-        (function createParticles() {
-            const container = document.getElementById('particles');
-            const colors = ['#FFE600', '#3483FA', '#AA66CC', '#00C853', '#FF5252'];
-            for (let i = 0; i < 30; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                const size = Math.random() * 8 + 3;
-                p.style.cssText = `
-                    width: ${size}px; height: ${size}px;
-                    background: ${colors[Math.floor(Math.random() * colors.length)]};
-                    left: ${Math.random() * 100}%;
-                    top: ${Math.random() * 100}%;
-                    animation-delay: ${Math.random() * 15}s;
-                    animation-duration: ${Math.random() * 10 + 10}s;
-                `;
-                container.appendChild(p);
+        (function(){
+            const c = document.getElementById('heroParticles');
+            const colors=['#FFE600','#3483FA','#AA66CC','#00C853','#FF5252','#FF4081'];
+            for(let i=0;i<40;i++){
+                const p=document.createElement('div');
+                p.className='pt';
+                const s=Math.random()*7+3;
+                p.style.cssText=`width:${s}px;height:${s}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*18}s;animation-duration:${Math.random()*12+10}s;`;
+                c.appendChild(p);
             }
         })();
 
-        // ===== SCROLL ANIMATIONS =====
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-        document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right').forEach(el => {
-            observer.observe(el);
-        });
-
-        // ===== NAV SCROLL EFFECT =====
-        const nav = document.getElementById('mainNav');
-        const navProgress = document.getElementById('navProgress');
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-links a');
-
-        window.addEventListener('scroll', () => {
-            // Nav background
-            nav.classList.toggle('scrolled', window.scrollY > 50);
-
-            // Progress bar
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (scrollTop / docHeight) * 100;
-            navProgress.style.width = scrollPercent + '%';
-
-            // Active link
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 150;
-                if (scrollTop >= sectionTop) {
-                    current = section.getAttribute('id');
-                }
-            });
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
-            });
-        });
+        // ===== ANIMATE ELEMENTS =====
+        function animateSlide(index, show){
+            const slide = slides[index];
+            const els = slide.querySelectorAll('.anim,.anim-left,.anim-right,.anim-scale,.anim-rotate,.anim-blur,.anim-flip');
+            if(show){
+                setTimeout(()=>{
+                    els.forEach(el=>el.classList.add('show'));
+                }, 100);
+            } else {
+                els.forEach(el=>el.classList.remove('show'));
+            }
+        }
 
         // ===== COUNTER ANIMATION =====
-        const counters = document.querySelectorAll('.hero-stat .number');
-        let countersAnimated = false;
-
-        const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !countersAnimated) {
-                    countersAnimated = true;
-                    counters.forEach(counter => {
-                        const target = parseInt(counter.getAttribute('data-count'));
-                        const duration = 2000;
-                        const step = target / (duration / 16);
-                        let current = 0;
-                        const timer = setInterval(() => {
-                            current += step;
-                            if (current >= target) {
-                                counter.textContent = target + (target === 800 ? '+' : '');
-                                clearInterval(timer);
-                            } else {
-                                counter.textContent = Math.floor(current);
-                            }
-                        }, 16);
-                    });
-                }
+        function animateCounters(slide){
+            const counters = slide.querySelectorAll('[data-count]');
+            counters.forEach(counter=>{
+                const target = parseInt(counter.getAttribute('data-count'));
+                const duration = 1800;
+                const step = target / (duration / 16);
+                let cur = 0;
+                counter.textContent = '0';
+                const timer = setInterval(()=>{
+                    cur += step;
+                    if(cur >= target){
+                        counter.textContent = target + (target >= 100 ? '+' : '');
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(cur);
+                    }
+                }, 16);
             });
-        }, { threshold: 0.5 });
+        }
 
-        counters.forEach(c => counterObserver.observe(c));
+        // ===== GO TO SLIDE =====
+        function goTo(index){
+            if(index === current || isAnimating || index < 0 || index >= total) return;
+            isAnimating = true;
 
-        // ===== SMOOTH SCROLL =====
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
+            const direction = index > current ? 'left' : 'right';
+            const oldSlide = slides[current];
+            const newSlide = slides[index];
 
-        // ===== PIN HOVER EFFECT =====
-        document.querySelectorAll('.pin-item').forEach(pin => {
-            pin.addEventListener('mouseenter', () => {
-                pin.style.transform = 'scale(1.15) rotate(5deg)';
-            });
-            pin.addEventListener('mouseleave', () => {
-                pin.style.transform = 'scale(1) rotate(0deg)';
-            });
-        });
+            // Remove animations from old
+            animateSlide(current, false);
 
-        // ===== CARD TILT EFFECT =====
-        document.querySelectorAll('.card, .game-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 40;
-                const rotateY = (centerX - x) / 40;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-            });
-        });
+            // Exit old slide
+            oldSlide.classList.remove('active');
+            oldSlide.classList.add(direction === 'left' ? 'exit-left' : 'exit-right');
 
-        // ===== KEYBOARD NAV =====
-        const sectionIds = Array.from(sections).map(s => s.id);
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-                e.preventDefault();
-                const current = sectionIds.findIndex(id => {
-                    const section = document.getElementById(id);
-                    const rect = section.getBoundingClientRect();
-                    return rect.top >= -100 && rect.top < window.innerHeight / 2;
+            // Prepare new slide entrance
+            newSlide.style.transition = 'none';
+            newSlide.style.transform = direction === 'left' ? 'translateX(60px) scale(0.97)' : 'translateX(-60px) scale(0.97)';
+            newSlide.style.opacity = '0';
+
+            requestAnimationFrame(()=>{
+                requestAnimationFrame(()=>{
+                    newSlide.style.transition = '';
+                    newSlide.classList.add('active');
+                    newSlide.classList.remove('exit-left','exit-right');
+
+                    // Animate elements in
+                    animateSlide(index, true);
+
+                    // Counters
+                    if(index === 0) animateCounters(newSlide);
                 });
-                const next = Math.min(current + 1, sectionIds.length - 1);
-                document.getElementById(sectionIds[next]).scrollIntoView({ behavior: 'smooth' });
+            });
+
+            setTimeout(()=>{
+                oldSlide.classList.remove('exit-left','exit-right');
+                oldSlide.style.transform = '';
+                oldSlide.style.opacity = '';
+                isAnimating = false;
+            }, ANIM_DURATION);
+
+            current = index;
+            updateUI();
+        }
+
+        // ===== UPDATE UI =====
+        function updateUI(){
+            slideNum.textContent = current + 1;
+            progressFill.style.width = ((current + 1) / total * 100) + '%';
+            btnPrev.disabled = current === 0;
+            btnNext.disabled = current === total - 1;
+            dots.forEach((d,i)=>d.classList.toggle('active', i===current));
+        }
+
+        // ===== NAV BUTTONS =====
+        btnPrev.addEventListener('click', ()=> goTo(current - 1));
+        btnNext.addEventListener('click', ()=> goTo(current + 1));
+
+        // ===== KEYBOARD =====
+        document.addEventListener('keydown', e=>{
+            if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){
+                e.preventDefault(); goTo(current+1);
             }
-            if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-                e.preventDefault();
-                const current = sectionIds.findIndex(id => {
-                    const section = document.getElementById(id);
-                    const rect = section.getBoundingClientRect();
-                    return rect.top >= -100 && rect.top < window.innerHeight / 2;
-                });
-                const prev = Math.max(current - 1, 0);
-                document.getElementById(sectionIds[prev]).scrollIntoView({ behavior: 'smooth' });
+            if(e.key==='ArrowLeft'||e.key==='ArrowUp'){
+                e.preventDefault(); goTo(current-1);
             }
+            if(e.key==='Home'){ e.preventDefault(); goTo(0); }
+            if(e.key==='End'){ e.preventDefault(); goTo(total-1); }
         });
+
+        // ===== TOUCH/SWIPE =====
+        let touchStartX = 0;
+        let touchStartY = 0;
+        document.addEventListener('touchstart', e=>{
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, {passive:true});
+        document.addEventListener('touchend', e=>{
+            const dx = e.changedTouches[0].screenX - touchStartX;
+            const dy = e.changedTouches[0].screenY - touchStartY;
+            if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50){
+                if(dx < 0) goTo(current+1);
+                else goTo(current-1);
+            }
+        }, {passive:true});
+
+        // ===== MOUSE WHEEL =====
+        let wheelTimeout;
+        document.addEventListener('wheel', e=>{
+            e.preventDefault();
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(()=>{
+                if(e.deltaY > 30) goTo(current+1);
+                else if(e.deltaY < -30) goTo(current-1);
+            }, 80);
+        }, {passive:false});
+
+        // ===== INIT =====
+        animateSlide(0, true);
+        animateCounters(slides[0]);
+        updateUI();
+
+        // ===== CARD TILT =====
+        document.querySelectorAll('.card,.game').forEach(card=>{
+            card.addEventListener('mousemove', e=>{
+                const r = card.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width;
+                const y = (e.clientY - r.top) / r.height;
+                const tiltX = (y - 0.5) * 8;
+                const tiltY = (0.5 - x) * 8;
+                card.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-3px)`;
+            });
+            card.addEventListener('mouseleave', ()=>{
+                card.style.transform = '';
+            });
+        });
+
+        // ===== PIN HOVER =====
+        document.querySelectorAll('.pin').forEach(pin=>{
+            pin.addEventListener('mouseenter', ()=>{ pin.style.transform='scale(1.2) rotate(8deg)'; });
+            pin.addEventListener('mouseleave', ()=>{ pin.style.transform=''; });
+        });
+
+    })();
     </script>
 </body>
 </html>
