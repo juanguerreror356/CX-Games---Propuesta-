@@ -10,108 +10,161 @@
 html,body{height:100%;overflow:hidden}
 body{font-family:'Inter',sans-serif;background:#08091a;color:#E8E8F0}
 
-.nav-bar{position:fixed;top:0;left:0;right:0;z-index:1000;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:rgba(8,9,26,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,230,0,0.06)}
-.nav-logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.95rem;color:#FFE600}
-.nav-counter{font-size:.75rem;color:#8B8EA8}.nav-counter strong{color:#fff}
-.progress-track{position:fixed;top:52px;left:0;right:0;height:3px;background:rgba(255,255,255,0.04);z-index:1000}
-.progress-fill{height:100%;background:linear-gradient(90deg,#FFE600,#FF9100);border-radius:0 3px 3px 0;transition:width .4s ease;width:9%}
-
+/* SLIDES */
 .slides-wrap{position:relative;width:100%;height:100vh}
-.S{position:absolute;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;justify-content:center;padding:68px 70px 90px;overflow-y:auto;overflow-x:hidden}
-.S.on{display:flex}
+.S{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:68px 70px 90px;overflow-y:auto;overflow-x:hidden;opacity:0;transform:scale(.96) translateY(30px);pointer-events:none;transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1);z-index:1}
+.S.on{opacity:1;transform:scale(1) translateY(0);pointer-events:all;z-index:10}
+.S.out-l{opacity:0;transform:scale(.94) translateX(-80px);pointer-events:none}
+.S.out-r{opacity:0;transform:scale(.94) translateX(80px);pointer-events:none}
 .S.ctr{align-items:center;text-align:center}
 
-.controls{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:14px}
-.cbtn{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s ease;backdrop-filter:blur(10px)}
-.cbtn:hover{background:#FFE600;color:#08091a;border-color:#FFE600;transform:scale(1.1)}
-.cbtn:disabled{opacity:.2;cursor:default;transform:none}.cbtn:disabled:hover{background:rgba(255,255,255,0.06);color:#fff;border-color:rgba(255,255,255,0.1)}
-.dots{display:flex;gap:5px}
-.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15);transition:all .3s ease;cursor:pointer}
-.dot.on{background:#FFE600;width:26px;border-radius:4px}
-.khint{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);font-size:.6rem;color:rgba(255,255,255,0.15);letter-spacing:2px;text-transform:uppercase;z-index:999}
+/* ELEMENT ANIMATIONS - cascade on active slide */
+.S .an{opacity:0;transform:translateY(40px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.S.on .an{opacity:1;transform:translateY(0)}
+.S .an-l{opacity:0;transform:translateX(-50px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.S.on .an-l{opacity:1;transform:translateX(0)}
+.S .an-r{opacity:0;transform:translateX(50px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.S.on .an-r{opacity:1;transform:translateX(0)}
+.S .an-s{opacity:0;transform:scale(.6);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.S.on .an-s{opacity:1;transform:scale(1)}
+.S .an-b{opacity:0;filter:blur(16px);transform:translateY(20px);transition:opacity .8s ease,filter .8s ease,transform .8s ease}
+.S.on .an-b{opacity:1;filter:blur(0);transform:translateY(0)}
+.S .an-f{opacity:0;transform:perspective(800px) rotateY(35deg);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
+.S.on .an-f{opacity:1;transform:perspective(800px) rotateY(0)}
+.S .an-ru{opacity:0;transform:rotate(-8deg) scale(.85) translateY(20px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.S.on .an-ru{opacity:1;transform:rotate(0) scale(1) translateY(0)}
+/* delays */
+.d0{transition-delay:0s}.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.26s}
+.d4{transition-delay:.36s}.d5{transition-delay:.46s}.d6{transition-delay:.56s}.d7{transition-delay:.66s}
+.d8{transition-delay:.76s}.d9{transition-delay:.86s}
 
+/* NAV */
+.nav-bar{position:fixed;top:0;left:0;right:0;z-index:1000;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:rgba(8,9,26,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,230,0,0.06)}
+.nav-logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.95rem;color:#FFE600;display:flex;align-items:center;gap:8px}
+.nav-counter{font-size:.75rem;color:#8B8EA8}.nav-counter strong{color:#fff}
+.progress-track{position:fixed;top:52px;left:0;right:0;height:3px;background:rgba(255,255,255,0.04);z-index:1000}
+.progress-fill{height:100%;background:linear-gradient(90deg,#FFE600,#FF9100,#FF5252);border-radius:0 3px 3px 0;transition:width .5s cubic-bezier(.4,0,.2,1);width:9%}
+
+.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:1000;display:flex;align-items:center;gap:12px;background:rgba(8,9,26,0.6);backdrop-filter:blur(16px);padding:8px 16px;border-radius:40px;border:1px solid rgba(255,255,255,0.06)}
+.cbtn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s cubic-bezier(.16,1,.3,1)}
+.cbtn:hover{background:#FFE600;color:#08091a;border-color:#FFE600;transform:scale(1.15);box-shadow:0 0 20px rgba(255,230,0,0.3)}
+.cbtn:active{transform:scale(.9)}
+.cbtn:disabled{opacity:.15;cursor:default;transform:none}.cbtn:disabled:hover{background:rgba(255,255,255,0.06);color:#fff;border-color:rgba(255,255,255,0.1);box-shadow:none;transform:none}
+.dots{display:flex;gap:5px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.12);transition:all .4s cubic-bezier(.16,1,.3,1);cursor:pointer}
+.dot.on{background:#FFE600;width:28px;border-radius:4px;box-shadow:0 0 12px rgba(255,230,0,0.3)}
+.dot:hover:not(.on){background:rgba(255,255,255,0.25);transform:scale(1.2)}
+.khint{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);font-size:.58rem;color:rgba(255,255,255,0.12);letter-spacing:2px;text-transform:uppercase;z-index:999}
+
+/* TYPOGRAPHY */
 .tag{font-family:'Space Grotesk',sans-serif;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:#FFE600;display:inline-flex;align-items:center;gap:8px;margin-bottom:14px}
-.tag::before{content:'';width:24px;height:2px;background:#FFE600}
-.ttl{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3.5vw,3rem);font-weight:800;line-height:1.15;margin-bottom:16px;background:linear-gradient(135deg,#fff,#c0c0d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.ttl-h{font-size:clamp(2.5rem,5.5vw,4.5rem);background:linear-gradient(135deg,#fff,#FFE600);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tag::before{content:'';width:24px;height:2px;background:#FFE600;border-radius:2px}
+.ttl{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,3.5vw,3rem);font-weight:800;line-height:1.15;margin-bottom:16px;background:linear-gradient(135deg,#fff,#b8b8d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ttl-h{font-size:clamp(2.5rem,5.5vw,4.5rem);background:linear-gradient(135deg,#fff 20%,#FFE600 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .sub{font-size:1.05rem;color:#8B8EA8;max-width:620px;line-height:1.7;margin-bottom:28px}
 .sub-c{text-align:center;margin-left:auto;margin-right:auto}
 .hl{-webkit-text-fill-color:#FFE600}
 
+/* CARDS */
 .gr{display:grid;gap:18px;width:100%}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
-.cd{background:#12153a;border:1px solid rgba(255,255,255,0.04);border-radius:18px;padding:26px;position:relative;overflow:hidden;transition:all .3s ease}
-.cd:hover{transform:translateY(-2px);border-color:rgba(255,230,0,0.1);box-shadow:0 0 30px rgba(255,230,0,0.05)}
+.cd{background:linear-gradient(145deg,#12153a,#0e1130);border:1px solid rgba(255,255,255,0.04);border-radius:18px;padding:26px;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.cd::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,230,0,0.04) 0%,transparent 60%);opacity:0;transition:opacity .3s ease;pointer-events:none}
+.cd:hover{transform:translateY(-4px);border-color:rgba(255,230,0,0.12);box-shadow:0 8px 40px rgba(255,230,0,0.06),0 0 0 1px rgba(255,230,0,0.05)}
+.cd:hover::before{opacity:1}
 .ct{position:absolute;top:0;left:0;right:0;height:3px}
 .ct-y{background:linear-gradient(90deg,#FFE600,#FFC400)}.ct-b{background:linear-gradient(90deg,#3483FA,#2D3277)}.ct-g{background:linear-gradient(90deg,#00C853,#00E676)}.ct-f{background:linear-gradient(90deg,#FF9100,#FF5252)}.ct-p{background:linear-gradient(90deg,#AA66CC,#7C4DFF)}.ct-pk{background:linear-gradient(90deg,#FF4081,#E040FB)}
-.ci{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:14px}
+.ci{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:14px;transition:transform .3s ease}
+.cd:hover .ci{transform:scale(1.1) rotate(3deg)}
 .ci-y{background:rgba(255,230,0,0.08)}.ci-b{background:rgba(52,131,250,0.08)}.ci-g{background:rgba(0,200,83,0.08)}.ci-f{background:rgba(255,82,82,0.08)}.ci-p{background:rgba(170,102,204,0.08)}
 .cd h3{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px}
 .cd p{font-size:.8rem;color:#8B8EA8;line-height:1.7}.cd strong{color:#c8c8e0}
 
 .badge{display:inline-flex;align-items:center;gap:5px;font-size:.62rem;font-weight:600;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:1px}
-.by{background:rgba(255,230,0,0.1);color:#FFE600}.bb{background:rgba(52,131,250,0.1);color:#3483FA}.bg{background:rgba(0,200,83,0.1);color:#00C853}.bp{background:rgba(255,64,129,0.1);color:#FF4081}
+.by{background:rgba(255,230,0,0.1);color:#FFE600}.bb{background:rgba(52,131,250,0.1);color:#3483FA}.bg2{background:rgba(0,200,83,0.1);color:#00C853}.bp{background:rgba(255,64,129,0.1);color:#FF4081}
 
-.gm{background:#12153a;border:1px solid rgba(255,255,255,0.04);border-radius:18px;overflow:hidden;transition:all .3s ease}
-.gm:hover{border-color:rgba(255,230,0,0.08)}
+/* GAME CARDS */
+.gm{background:linear-gradient(145deg,#12153a,#0e1130);border:1px solid rgba(255,255,255,0.04);border-radius:18px;overflow:hidden;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.gm:hover{border-color:rgba(255,230,0,0.1);box-shadow:0 8px 40px rgba(0,0,0,0.3);transform:translateY(-3px)}
 .gmh{padding:20px 24px 14px;border-bottom:1px solid rgba(255,255,255,0.04);position:relative}
 .gmn{font-family:'Space Grotesk',sans-serif;font-size:2.5rem;font-weight:900;opacity:.04;position:absolute;top:6px;right:18px;line-height:1}
 .gmna{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:#fff;margin:5px 0 3px}
 .gmd{font-size:.75rem;color:#8B8EA8}
 .gmb{padding:16px 24px 20px}
-.gml{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFE600;margin-bottom:8px}
+.gml{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#FFE600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .gm ul{list-style:none;margin-bottom:14px}
 .gm li{font-size:.75rem;color:#b8b8d0;padding:5px 0;display:flex;align-items:flex-start;gap:7px;border-bottom:1px solid rgba(255,255,255,0.02)}
 .sl li::before{content:'✅';flex-shrink:0;font-size:.65rem}.il li::before{content:'🚀';flex-shrink:0;font-size:.65rem}
 
+/* COMPARISON */
 .cmp{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%}
-.cc{background:#12153a;border-radius:18px;padding:26px;border:1px solid rgba(255,255,255,0.04)}
-.cc.bf{border-top:3px solid #8B8EA8}.cc.af{border-top:3px solid #FFE600}
+.cc{background:linear-gradient(145deg,#12153a,#0e1130);border-radius:18px;padding:26px;border:1px solid rgba(255,255,255,0.04);transition:all .3s ease}
+.cc:hover{transform:translateY(-2px)}
+.cc.bf{border-top:3px solid #555}.cc.af{border-top:3px solid #FFE600}
 .cc h3{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:16px}
-.cc.bf h3{color:#8B8EA8}.cc.af h3{color:#FFE600}
-.ci2{padding:8px 0;font-size:.8rem;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:flex-start;gap:7px}
-.cc.bf .ci2{color:#8B8EA8}.cc.af .ci2{color:#c8c8e0}
+.cc.bf h3{color:#666}.cc.af h3{color:#FFE600}
+.ci2{padding:8px 0;font-size:.8rem;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:flex-start;gap:7px;transition:all .2s ease}
+.ci2:hover{padding-left:6px}
+.cc.bf .ci2{color:#666}.cc.af .ci2{color:#c8c8e0}
 
+/* ECOSYSTEM */
 .eg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%}
-.ei{background:#12153a;border-radius:12px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,0.04);transition:all .3s ease}
-.ei:hover{border-color:rgba(255,230,0,0.12);transform:translateY(-2px)}
-.ei.nw{border-color:rgba(255,64,129,0.12)}
-.ee{font-size:1.6rem;margin-bottom:8px}.ed{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:5px}
+.ei{background:linear-gradient(145deg,#12153a,#0e1130);border-radius:14px;padding:20px;text-align:center;border:1px solid rgba(255,255,255,0.04);transition:all .4s cubic-bezier(.16,1,.3,1)}
+.ei:hover{border-color:rgba(255,230,0,0.15);transform:translateY(-4px) scale(1.02);box-shadow:0 8px 30px rgba(0,0,0,0.3)}
+.ei.nw{border-color:rgba(255,64,129,0.12)}.ei.nw:hover{border-color:rgba(255,64,129,0.3);box-shadow:0 8px 30px rgba(255,64,129,0.1)}
+.ee{font-size:1.6rem;margin-bottom:8px;transition:transform .3s ease}
+.ei:hover .ee{transform:scale(1.2) rotate(5deg)}
+.ed{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:5px}
 .en{font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:700;color:#fff;margin-bottom:5px}
 .eq{font-size:.72rem;color:#8B8EA8;font-style:italic}
-.ec{grid-column:1/-1;text-align:center;padding:12px;background:rgba(255,230,0,0.03);border-radius:12px;border:1px dashed rgba(255,230,0,0.1);font-size:.78rem;color:#FFE600;font-weight:600}
+.ec{grid-column:1/-1;text-align:center;padding:14px;background:rgba(255,230,0,0.03);border-radius:12px;border:1px dashed rgba(255,230,0,0.12);font-size:.78rem;color:#FFE600;font-weight:600;animation:glowPulse 3s infinite ease-in-out}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 0 rgba(255,230,0,0)}50%{box-shadow:0 0 20px rgba(255,230,0,0.06)}}
 
-.qt{background:rgba(255,230,0,0.03);border-left:3px solid #FFE600;border-radius:0 12px 12px 0;padding:16px 22px;margin-top:20px;font-size:.88rem;font-style:italic;color:#c8c8e0;line-height:1.7}
+/* QUOTE */
+.qt{background:rgba(255,230,0,0.03);border-left:3px solid #FFE600;border-radius:0 14px 14px 0;padding:16px 22px;margin-top:20px;font-size:.88rem;font-style:italic;color:#c8c8e0;line-height:1.7;transition:all .3s ease}
+.qt:hover{background:rgba(255,230,0,0.05);transform:translateX(4px)}
 
+/* RESOURCES */
 .rg{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;width:100%}
-.ri{background:#12153a;border-radius:12px;padding:20px 14px;text-align:center;border:1px solid rgba(255,255,255,0.04)}
-.ri .rx{font-size:1.6rem;margin-bottom:8px}.ri h4{font-size:.78rem;font-weight:700;color:#fff;margin-bottom:3px}.ri p{font-size:.68rem;color:#8B8EA8}
+.ri2{background:linear-gradient(145deg,#12153a,#0e1130);border-radius:14px;padding:20px 14px;text-align:center;border:1px solid rgba(255,255,255,0.04);transition:all .4s cubic-bezier(.16,1,.3,1)}
+.ri2:hover{transform:translateY(-4px);border-color:rgba(255,230,0,0.1);box-shadow:0 8px 30px rgba(0,0,0,0.3)}
+.ri2 .rx{font-size:1.6rem;margin-bottom:8px;transition:transform .3s ease}
+.ri2:hover .rx{transform:scale(1.2) rotate(5deg)}
+.ri2 h4{font-size:.78rem;font-weight:700;color:#fff;margin-bottom:3px}.ri2 p{font-size:.68rem;color:#8B8EA8}
 
+/* PINS */
 .pins{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:18px}
-.pin{width:74px;height:74px;border-radius:50%;background:#12153a;border:2px solid rgba(255,230,0,0.1);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .3s ease;cursor:default}
-.pin:hover{transform:scale(1.15) rotate(5deg);border-color:#FFE600;box-shadow:0 0 25px rgba(255,230,0,0.12)}
-.pin .pe{font-size:1.2rem}.pin .pl{font-size:.42rem;color:#8B8EA8;margin-top:2px;text-align:center;line-height:1.3}
+.pin{width:76px;height:76px;border-radius:50%;background:linear-gradient(145deg,#16194a,#0e1130);border:2px solid rgba(255,230,0,0.1);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .4s cubic-bezier(.16,1,.3,1);cursor:default;position:relative}
+.pin::after{content:'';position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(from 0deg,#FFE600,#FF9100,#FF5252,#AA66CC,#3483FA,#00C853,#FFE600);opacity:0;transition:opacity .4s ease;z-index:-1}
+.pin:hover{transform:scale(1.2) rotate(8deg);border-color:transparent;box-shadow:0 0 30px rgba(255,230,0,0.2)}
+.pin:hover::after{opacity:.6}
+.pin .pe{font-size:1.2rem;transition:transform .3s ease}
+.pin:hover .pe{transform:scale(1.15)}
+.pin .pl{font-size:.42rem;color:#8B8EA8;margin-top:2px;text-align:center;line-height:1.3}
 
-.ha{display:inline-flex;align-items:center;gap:10px;background:#12153a;padding:10px 20px;border-radius:50px;border:1px solid rgba(255,230,0,0.1)}
+/* HERO */
+.ha{display:inline-flex;align-items:center;gap:10px;background:rgba(18,21,58,0.8);padding:10px 20px;border-radius:50px;border:1px solid rgba(255,230,0,0.1);backdrop-filter:blur(10px);transition:all .3s ease}
+.ha:hover{border-color:rgba(255,230,0,0.25);box-shadow:0 0 20px rgba(255,230,0,0.08)}
 .ha span{font-size:.78rem;color:#8B8EA8}.ha strong{color:#fff;font-size:.82rem}
 .hs{display:flex;gap:44px;justify-content:center;margin-top:24px}
 .hst{text-align:center}
-.hst .hn{font-family:'Space Grotesk',sans-serif;font-size:2.6rem;font-weight:900;color:#FFE600}
+.hst .hn{font-family:'Space Grotesk',sans-serif;font-size:2.6rem;font-weight:900;color:#FFE600;text-shadow:0 0 30px rgba(255,230,0,0.2)}
 .hst .hl2{font-size:.72rem;color:#8B8EA8;margin-top:2px}
 
+/* PARTICLES */
 .particles{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden}
-.pt{position:absolute;border-radius:50%;opacity:.1;animation:ptF 18s infinite ease-in-out}
-@keyframes ptF{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
-.glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:.06;pointer-events:none}
-.gl-y{background:#FFE600}.gl-b{background:#3483FA}.gl-p{background:#FF4081}
-.bgr{background:linear-gradient(135deg,#08091a,#12153a 40%,#1a1e52)}
+.pt{position:absolute;border-radius:50%;animation:ptF var(--dur,16s) infinite ease-in-out}
+@keyframes ptF{0%,100%{transform:translate(0,0) scale(1);opacity:.12}25%{transform:translate(10px,-20px) scale(1.1);opacity:.18}50%{transform:translate(-5px,-35px) scale(.9);opacity:.08}75%{transform:translate(15px,-15px) scale(1.05);opacity:.15}}
+.glow{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;transition:all 1s ease}
+.gl-y{background:#FFE600;opacity:.06}.gl-b{background:#3483FA;opacity:.05}.gl-p{background:#FF4081;opacity:.05}
+.bgr{background:linear-gradient(135deg,#08091a 0%,#0f1235 30%,#161a4a 60%,#1a1e52 100%)}
 
-/* SLIDE TRANSITION ANIMATION */
-.S .an{opacity:0;transform:translateY(25px);transition:opacity .5s ease,transform .5s ease}
-.S.on .an{opacity:1;transform:translateY(0)}
-.S.on .an.a1{transition-delay:.05s}.S.on .an.a2{transition-delay:.12s}.S.on .an.a3{transition-delay:.2s}
-.S.on .an.a4{transition-delay:.28s}.S.on .an.a5{transition-delay:.36s}.S.on .an.a6{transition-delay:.44s}
-.S.on .an.a7{transition-delay:.52s}.S.on .an.a8{transition-delay:.6s}.S.on .an.a9{transition-delay:.68s}
+/* FLOATING SHAPES */
+@keyframes float1{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-15px) rotate(3deg)}}
+@keyframes float2{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(-2deg)}}
+.float1{animation:float1 6s infinite ease-in-out}
+.float2{animation:float2 8s infinite ease-in-out}
 
+/* RESPONSIVE */
 @media(max-width:1100px){.S{padding:65px 36px 90px}.g3{grid-template-columns:repeat(2,1fr)}.rg{grid-template-columns:repeat(3,1fr)}.eg{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.S{padding:60px 18px 90px}.g3,.g2,.cmp{grid-template-columns:1fr}.rg{grid-template-columns:repeat(2,1fr)}.eg{grid-template-columns:1fr}.hs{gap:20px}.hst .hn{font-size:2rem}}
 </style>
@@ -124,75 +177,76 @@ body{font-family:'Inter',sans-serif;background:#08091a;color:#E8E8F0}
 </div>
 <div class="progress-track"><div class="progress-fill" id="pF"></div></div>
 
-<div class="slides-wrap">
+<div class="slides-wrap" id="sw">
 
 <!-- 1 HERO -->
 <div class="S ctr bgr on" id="s0">
 <div class="particles" id="ptc"></div>
-<div class="glow gl-y" style="width:500px;height:500px;top:-100px;right:-100px"></div>
-<div class="glow gl-b" style="width:400px;height:400px;bottom:-80px;left:-80px"></div>
-<div class="tag an a1" style="justify-content:center">Propuesta estratégica 2025</div>
-<h1 class="ttl ttl-h an a2">CX Games:<br>Next Level 🚀</h1>
-<p class="sub sub-c an a3">Una propuesta para transformar la experiencia competitiva<br>de +800 representantes en toda la región.</p>
-<div class="ha an a4"><span>Presentado por</span><strong>Juan Sebastián Guerrero Rodríguez</strong></div>
-<div class="hs an a5">
-<div class="hst"><div class="hn" data-c="800">800+</div><div class="hl2">Representantes</div></div>
-<div class="hst"><div class="hn" data-c="5">5</div><div class="hl2">Juegos integrados</div></div>
-<div class="hst"><div class="hn" data-c="3">3</div><div class="hl2">Ejes estratégicos</div></div>
+<div class="glow gl-y" style="width:600px;height:600px;top:-150px;right:-150px"></div>
+<div class="glow gl-b" style="width:500px;height:500px;bottom:-120px;left:-120px"></div>
+<div class="glow gl-p" style="width:300px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+<div class="tag an-s d1" style="justify-content:center">Propuesta estratégica 2025</div>
+<h1 class="ttl ttl-h an-b d2">CX Games:<br>Next Level 🚀</h1>
+<p class="sub sub-c an d3">Una propuesta para transformar la experiencia competitiva<br>de +800 representantes en toda la región.</p>
+<div class="ha an-s d4"><span>Presentado por</span><strong>Juan Sebastián Guerrero Rodríguez</strong></div>
+<div class="hs an d5">
+<div class="hst"><div class="hn" id="c1">0</div><div class="hl2">Representantes</div></div>
+<div class="hst"><div class="hn" id="c2">0</div><div class="hl2">Juegos integrados</div></div>
+<div class="hst"><div class="hn" id="c3">0</div><div class="hl2">Ejes estratégicos</div></div>
 </div>
 </div>
 
 <!-- 2 OPORTUNIDAD -->
 <div class="S" id="s1">
-<div class="glow gl-y" style="width:350px;height:350px;top:10%;right:5%"></div>
-<div class="tag an a1">Punto de partida</div>
-<h2 class="ttl an a2">Tenemos una base increíble.<br>Ahora es momento de llevarla al <span class="hl">siguiente nivel.</span></h2>
-<p class="sub an a3">CX Games ya cuenta con estructura sólida. Esta propuesta busca potenciar lo que ya funciona y agregar capas de conexión, visibilidad y emoción.</p>
+<div class="glow gl-y" style="width:400px;height:400px;top:10%;right:5%"></div>
+<div class="tag an d0">Punto de partida</div>
+<h2 class="ttl an-b d1">Tenemos una base increíble.<br>Ahora es momento de llevarla al <span class="hl">siguiente nivel.</span></h2>
+<p class="sub an d2">CX Games ya cuenta con estructura sólida. Esta propuesta busca potenciar lo que ya funciona y agregar capas de conexión, visibilidad y emoción.</p>
 <div class="gr g3">
-<div class="cd an a4"><div class="ct ct-y"></div><div class="ci ci-y">✅</div><h3>Estructura sólida</h3><p>Mini games mensuales, métrica de Orgullo, duelos entre equipos y premios anuales que ya generan competencia.</p></div>
-<div class="cd an a5"><div class="ct ct-b"></div><div class="ci ci-b">👥</div><h3>+800 conectados</h3><p>Más de 800 representantes en un mismo canal con potencial de engagement masivo aún sin explotar.</p></div>
-<div class="cd an a6"><div class="ct ct-g"></div><div class="ci ci-g">🎯</div><h3>Desafíos que funcionan</h3><p>Los juegos mensuales ya generan buenos casos y desarrollan habilidades reales en los representantes.</p></div>
+<div class="cd an-f d3"><div class="ct ct-y"></div><div class="ci ci-y">✅</div><h3>Estructura sólida</h3><p>Mini games mensuales, métrica de Orgullo, duelos entre equipos y premios anuales que ya generan competencia.</p></div>
+<div class="cd an-f d4"><div class="ct ct-b"></div><div class="ci ci-b">👥</div><h3>+800 conectados</h3><p>Más de 800 representantes en un mismo canal con potencial de engagement masivo aún sin explotar.</p></div>
+<div class="cd an-f d5"><div class="ct ct-g"></div><div class="ci ci-g">🎯</div><h3>Desafíos que funcionan</h3><p>Los juegos mensuales ya generan buenos casos y desarrollan habilidades reales en los representantes.</p></div>
 </div>
-<div class="qt an a7">💡 <strong>La oportunidad:</strong> Transformar la participación existente en una experiencia que los reps vivan todos los días, no solo los viernes.</div>
+<div class="qt an d6">💡 <strong>La oportunidad:</strong> Transformar la participación existente en una experiencia que los reps vivan todos los días, no solo los viernes.</div>
 </div>
 
 <!-- 3 EJES -->
 <div class="S ctr" id="s2">
-<div class="glow gl-b" style="width:400px;height:400px;top:20%;left:10%"></div>
-<div class="tag an a1" style="justify-content:center">Estrategia</div>
-<h2 class="ttl an a2">3 ejes para multiplicar<br>el impacto</h2>
-<p class="sub sub-c an a3">No es hacer más. Es hacer que lo que ya existe se sienta diferente.</p>
+<div class="glow gl-b" style="width:450px;height:450px;top:15%;left:8%"></div>
+<div class="tag an-s d0" style="justify-content:center">Estrategia</div>
+<h2 class="ttl an-b d1">3 ejes para multiplicar<br>el impacto</h2>
+<p class="sub sub-c an d2">No es hacer más. Es hacer que lo que ya existe se sienta diferente.</p>
 <div class="gr g3" style="max-width:960px">
-<div class="cd an a4" style="text-align:center"><div class="ct ct-y"></div><div style="font-size:2.3rem;margin-bottom:12px">📣</div><h3>Comunicativo</h3><p>Que cada semana se sienta como un evento. Contenido visual con IA, podcast con Beto, highlights semanales.</p></div>
-<div class="cd an a5" style="text-align:center"><div class="ct ct-g"></div><div style="font-size:2.3rem;margin-bottom:12px">💰</div><h3>Valor Tangible</h3><p>Que cada premio se sienta como una experiencia. Menú de premios locales, pines y stickers coleccionables.</p></div>
-<div class="cd an a6" style="text-align:center"><div class="ct ct-f"></div><div style="font-size:2.3rem;margin-bottom:12px">❤️‍🔥</div><h3>Emocional</h3><p>Que cada rep sepa cómo va y quiera más. Dashboard en tiempo real, seguimiento semanal, visibilidad total.</p></div>
+<div class="cd an-s d3" style="text-align:center"><div class="ct ct-y"></div><div style="font-size:2.3rem;margin-bottom:12px" class="float1">📣</div><h3>Comunicativo</h3><p>Que cada semana se sienta como un evento. Contenido visual con IA, podcast con Beto, highlights semanales.</p></div>
+<div class="cd an-s d4" style="text-align:center"><div class="ct ct-g"></div><div style="font-size:2.3rem;margin-bottom:12px" class="float2">💰</div><h3>Valor Tangible</h3><p>Que cada premio se sienta como una experiencia. Menú de premios locales, pines y stickers coleccionables.</p></div>
+<div class="cd an-s d5" style="text-align:center"><div class="ct ct-f"></div><div style="font-size:2.3rem;margin-bottom:12px" class="float1">❤️‍🔥</div><h3>Emocional</h3><p>Que cada rep sepa cómo va y quiera más. Dashboard en tiempo real, seguimiento semanal, visibilidad total.</p></div>
 </div>
 </div>
 
 <!-- 4 COMUNICATIVO -->
 <div class="S" id="s3">
-<div class="glow gl-y" style="width:300px;height:300px;bottom:5%;right:5%"></div>
-<div class="tag an a1">Eje 1 — Comunicativo</div>
-<h2 class="ttl an a2">Que el juego<br>se viva 📣</h2>
-<p class="sub an a3">+800 personas ven el canal. ¿Y si cada publicación se sintiera como el trailer de una película?</p>
+<div class="glow gl-y" style="width:350px;height:350px;bottom:5%;right:5%"></div>
+<div class="tag an d0">Eje 1 — Comunicativo</div>
+<h2 class="ttl an-b d1">Que el juego<br>se viva 📣</h2>
+<p class="sub an d2">+800 personas ven el canal. ¿Y si cada publicación se sintiera como el trailer de una película?</p>
 <div class="gr g3">
-<div class="cd an a4"><div class="ct ct-y"></div><div class="ci ci-y">🐙</div><h3>Podcast "Beto Tips"</h3><p><strong>Máx 90 seg · 100% IA</strong><br><br>Beto entrevista a una <strong>caricatura personalizada del rep</strong> ganador. Tips reales, voz IA, fondos temáticos mes a mes.<br><br><span class="badge by">Sept → Espacio 🚀</span> <span class="badge bb">Oct → Halloween 🎃</span></p></div>
-<div class="cd an a5"><div class="ct ct-b"></div><div class="ci ci-b">⭐</div><h3>El Momento de la Semana</h3><p>Cada lunes, el <strong>mejor momento</strong> del viernes anterior en card visual con IA.<br><br>No el caso completo, sino el fragmento que inspira.<br><br><strong>Enseña y motiva al mismo tiempo.</strong></p></div>
-<div class="cd an a6"><div class="ct ct-g"></div><div class="ci ci-g">🎨</div><h3>Comunicaciones Reinventadas</h3><p>De texto con emojis a <strong>experiencias visuales</strong> con IA.<br><br>Misma info, imágenes épicas que impactan a +800 personas.<br><br><strong>La comunicación debe sentirse como un evento, no como un memo.</strong></p></div>
+<div class="cd an-l d3"><div class="ct ct-y"></div><div class="ci ci-y">🐙</div><h3>Podcast "Beto Tips"</h3><p><strong>Máx 90 seg · 100% IA</strong><br><br>Beto entrevista a una <strong>caricatura personalizada del rep</strong> ganador. Tips reales, voz IA, fondos temáticos mes a mes.<br><br><span class="badge by">Sept → Espacio 🚀</span> <span class="badge bb">Oct → Halloween 🎃</span></p></div>
+<div class="cd an d4"><div class="ct ct-b"></div><div class="ci ci-b">⭐</div><h3>El Momento de la Semana</h3><p>Cada lunes, el <strong>mejor momento</strong> del viernes anterior en card visual con IA.<br><br>No el caso completo, sino el fragmento que inspira.<br><br><strong>Enseña y motiva al mismo tiempo.</strong></p></div>
+<div class="cd an-r d5"><div class="ct ct-g"></div><div class="ci ci-g">🎨</div><h3>Comunicaciones Reinventadas</h3><p>De texto con emojis a <strong>experiencias visuales</strong> con IA.<br><br>Misma info, imágenes épicas que impactan a +800 personas.<br><br><strong>La comunicación debe sentirse como un evento, no como un memo.</strong></p></div>
 </div>
 </div>
 
 <!-- 5 VALOR -->
 <div class="S" id="s4">
-<div class="glow gl-p" style="width:350px;height:350px;top:15%;left:5%"></div>
-<div class="tag an a1">Eje 2 — Valor Tangible</div>
-<h2 class="ttl an a2">Que el premio<br>se sienta 💰</h2>
-<p class="sub an a3">No cambia el presupuesto, cambia la percepción.</p>
+<div class="glow gl-p" style="width:400px;height:400px;top:15%;left:3%"></div>
+<div class="tag an d0">Eje 2 — Valor Tangible</div>
+<h2 class="ttl an-b d1">Que el premio<br>se sienta 💰</h2>
+<p class="sub an d2">No cambia el presupuesto, cambia la percepción.</p>
 <div class="gr g2">
-<div class="cd an a4"><div class="ct ct-g"></div><div class="ci ci-g">🎁</div><h3>Menú de Premios Locales</h3><p>Los mismos USD como <strong>3 opciones reales</strong> por país:<br><br>🇦🇷 Medialunas · Stickers · Snack box<br>🇨🇴 Desayuno sorpresa · Gift card · Kit café<br>🇲🇽 Tacos · Café especial · Merch<br><br>En vez de "ganaste $10" → <strong>"Tu equipo eligió desayuno sorpresa 🎉"</strong></p></div>
-<div class="cd an a5"><div class="ct ct-p"></div><div class="ci ci-p">🏅</div><h3>Pines y Stickers Coleccionables</h3><p>Diseños <strong>exclusivos mes a mes</strong>, edición limitada. Premio personal O de equipo.<br><br>Para lucir en: 💻 Laptop · 🧥 Chaqueta · 🎒 Maleta<br><br><strong>"Cuando un rep pega un sticker en su laptop, está diciendo: yo soy parte de esto."</strong></p></div>
+<div class="cd an-l d3"><div class="ct ct-g"></div><div class="ci ci-g">🎁</div><h3>Menú de Premios Locales</h3><p>Los mismos USD como <strong>3 opciones reales</strong> por país:<br><br>🇦🇷 Medialunas · Stickers · Snack box<br>🇨🇴 Desayuno sorpresa · Gift card · Kit café<br>🇲🇽 Tacos · Café especial · Merch<br><br>En vez de "ganaste $10" → <strong>"Tu equipo eligió desayuno sorpresa 🎉"</strong></p></div>
+<div class="cd an-r d4"><div class="ct ct-p"></div><div class="ci ci-p">🏅</div><h3>Pines y Stickers Coleccionables</h3><p>Diseños <strong>exclusivos mes a mes</strong>, edición limitada. Premio personal O de equipo.<br><br>Para lucir en: 💻 Laptop · 🧥 Chaqueta · 🎒 Maleta<br><br><strong>"Cuando un rep pega un sticker en su laptop, está diciendo: yo soy parte de esto."</strong></p></div>
 </div>
-<div class="pins an a6">
+<div class="pins an-s d5">
 <div class="pin"><div class="pe">⭐</div><div class="pl">Viernes<br>con Estilo</div></div>
 <div class="pin"><div class="pe">🔄</div><div class="pl">Convertidor</div></div>
 <div class="pin"><div class="pe">🎯</div><div class="pl">Calibrador</div></div>
@@ -202,50 +256,50 @@ body{font-family:'Inter',sans-serif;background:#08091a;color:#E8E8F0}
 </div>
 </div>
 
-<!-- 6 EMOCIONAL -->
+  <!-- 6 EMOCIONAL -->
 <div class="S" id="s5">
-<div class="glow gl-b" style="width:400px;height:400px;bottom:0;right:0"></div>
-<div class="tag an a1">Eje 3 — Emocional</div>
-<h2 class="ttl an a2">Que todos sepan<br>cómo van ❤️‍🔥</h2>
-<p class="sub an a3">La visibilidad genera competencia. La competencia genera excelencia.</p>
+<div class="glow gl-b" style="width:450px;height:450px;bottom:-50px;right:-50px"></div>
+<div class="tag an d0">Eje 3 — Emocional</div>
+<h2 class="ttl an-b d1">Que todos sepan<br>cómo van ❤️‍🔥</h2>
+<p class="sub an d2">La visibilidad genera competencia. La competencia genera excelencia.</p>
 <div class="gr g2">
-<div class="cd an a4"><div class="ct ct-f"></div><div class="ci ci-f">📊</div><h3>Dashboard CX Games en Tiempo Real</h3><p>🏆 Ranking de equipos por duelo<br>📈 Evolución semanal<br>🌟 Fortalezas de cada caso<br>⚔️ Estado de duelos en vivo<br><br><strong>Los reps ven su posición y qué hacen los otros.</strong></p></div>
-<div class="cd an a5"><div class="ct ct-y"></div><div class="ci ci-y">📢</div><h3>Spotlight Semanal</h3><p>Cada lunes, resumen automático:<br><br><em>"Semana 2: Comprador Chat lidera con 3 casos Alto. @María destacó con un cierre épico."</em><br><br><strong>La competencia no espera a fin de mes.</strong></p></div>
-<div class="cd an a6"><div class="ct ct-b"></div><div class="ci ci-b">🏆</div><h3>Muro de Fortalezas</h3><p>Cada caso genera una <strong>tarjeta visual con sus fortalezas</strong>. Visible para todos.<br><br><strong>Aprendizaje orgánico de los mejores.</strong></p></div>
-<div class="cd an a7"><div class="ct ct-g"></div><div class="ci ci-g">🎯</div><h3>Tracker "Camino al Orgullo"</h3><p>Barra de progreso visual por rep hacia el caso de orgullo (Alto en los 4 momentos).<br><br><strong>Conecta el juego mensual con el premio anual.</strong></p></div>
+<div class="cd an-f d3"><div class="ct ct-f"></div><div class="ci ci-f">📊</div><h3>Dashboard CX Games en Tiempo Real</h3><p>🏆 Ranking de equipos por duelo<br>📈 Evolución semanal<br>🌟 Fortalezas de cada caso<br>⚔️ Estado de duelos en vivo<br><br><strong>Los reps ven su posición y qué hacen los otros.</strong></p></div>
+<div class="cd an-f d4"><div class="ct ct-y"></div><div class="ci ci-y">📢</div><h3>Spotlight Semanal</h3><p>Cada lunes, resumen automático:<br><br><em>"Semana 2: Comprador Chat lidera con 3 casos Alto. @María destacó con un cierre épico."</em><br><br><strong>La competencia no espera a fin de mes.</strong></p></div>
+<div class="cd an-f d5"><div class="ct ct-b"></div><div class="ci ci-b">🏆</div><h3>Muro de Fortalezas</h3><p>Cada caso genera una <strong>tarjeta visual con sus fortalezas</strong>. Visible para todos.<br><br><strong>Aprendizaje orgánico de los mejores.</strong></p></div>
+<div class="cd an-f d6"><div class="ct ct-g"></div><div class="ci ci-g">🎯</div><h3>Tracker "Camino al Orgullo"</h3><p>Barra de progreso visual por rep hacia el caso de orgullo (Alto en los 4 momentos).<br><br><strong>Conecta el juego mensual con el premio anual.</strong></p></div>
 </div>
 </div>
 
 <!-- 7 JUEGOS EXISTENTES -->
 <div class="S" id="s6">
-<div class="tag an a1">Los 5 juegos — Existentes</div>
-<h2 class="ttl an a2">Fortalezas + Mejoras<br>de los juegos actuales 💪</h2>
-<p class="sub an a3">3 juegos sólidos que se potencian con las nuevas capas.</p>
+<div class="tag an d0">Los 5 juegos — Existentes</div>
+<h2 class="ttl an-b d1">Fortalezas + Mejoras<br>de los juegos actuales 💪</h2>
+<p class="sub an d2">3 juegos sólidos que se potencian con las nuevas capas.</p>
 <div class="gr g3">
-<div class="gm an a4"><div class="gmh"><div class="gmn">01</div><span class="badge by">Colas con LU</span><div class="gmna">⭐ Viernes con Estilo</div><div class="gmd">Dominar un momento del Estilo MeLi</div></div><div class="gmb"><div class="gml">💪 Fortalezas</div><ul class="sl"><li>Foco en 1 momento específico → especialización</li><li>Supervisor elige momento → personalizado</li><li>Rep elige su mejor caso → autoconciencia</li></ul><div class="gml">🚀 Se potencia con</div><ul class="il"><li>Imagen IA al inicio del mes</li><li>"Momento de la Semana" cada lunes</li><li>Dashboard + Beto Tips + Pin mensual</li></ul></div></div>
-<div class="gm an a5"><div class="gmh"><div class="gmn">02</div><span class="badge bg">Colas sin LU</span><div class="gmna">🔄 Convirtiendo en Promotor</div><div class="gmd">Revertir emociones negativas</div></div><div class="gmb"><div class="gml">💪 Fortalezas</div><ul class="sl"><li>Habilidad más difícil: revertir emociones</li><li>Incluye reps sin LU → amplia participación</li><li>Criterio visible: promotor o expresión positiva</li></ul><div class="gml">🚀 Se potencia con</div><ul class="il"><li>Card ANTES/DESPUÉS con IA</li><li>Conversiones visibles en Dashboard</li><li>Pin coleccionable "Convertidor"</li></ul></div></div>
-<div class="gm an a6"><div class="gmh"><div class="gmn">03</div><span class="badge bb">Con y sin LU</span><div class="gmna">🎯 Calibrando a la Operación</div><div class="gmd">Evaluar casos vs. Champions</div></div><div class="gmb"><div class="gml">💪 Fortalezas</div><ul class="sl"><li>Desarrolla ojo analítico del rep</li><li>Estándar objetivo (Champions)</li><li>Por equipo → colaboración real</li></ul><div class="gml">🚀 Se potencia con</div><ul class="il"><li>Formato quiz: "¿Cuánto le das?"</li><li>Duelos en tiempo real en Dashboard</li><li>Beto reacciona al resultado semanal</li></ul></div></div>
+<div class="gm an-l d3"><div class="gmh"><div class="gmn">01</div><span class="badge by">Colas con LU</span><div class="gmna">⭐ Viernes con Estilo</div><div class="gmd">Dominar un momento del Estilo MeLi</div></div><div class="gmb"><div class="gml">💪 Fortalezas</div><ul class="sl"><li>Foco en 1 momento específico → especialización</li><li>Supervisor elige momento → personalizado</li><li>Rep elige su mejor caso → autoconciencia</li></ul><div class="gml">🚀 Se potencia con</div><ul class="il"><li>Imagen IA al inicio del mes</li><li>"Momento de la Semana" cada lunes</li><li>Dashboard + Beto Tips + Pin mensual</li></ul></div></div>
+<div class="gm an-ru d4"><div class="gmh"><div class="gmn">02</div><span class="badge bg2">Colas sin LU</span><div class="gmna">🔄 Convirtiendo en Promotor</div><div class="gmd">Revertir emociones negativas</div></div><div class="gmb"><div class="gml">💪 Fortalezas</div><ul class="sl"><li>Habilidad más difícil: revertir emociones</li><li>Incluye reps sin LU → amplia participación</li><li>Criterio visible: promotor o expresión positiva</li></ul><div class="gml">🚀 Se potencia con</div><ul class="il"><li>Card ANTES/DESPUÉS con IA</li><li>Conversiones visibles en Dashboard</li><li>Pin coleccionable "Convertidor"</li></ul></div></div>
+<div class="gm an-r d5"><div class="gmh"><div class="gmn">03</div><span class="badge bb">Con y sin LU</span><div class="gmna">🎯 Calibrando a la Operación</div><div class="gmd">Evaluar casos vs. Champions</div></div><div class="gmb"><div class="gml">💪 Fortalezas</div><ul class="sl"><li>Desarrolla ojo analítico del rep</li><li>Estándar objetivo (Champions)</li><li>Por equipo → colaboración real</li></ul><div class="gml">🚀 Se potencia con</div><ul class="il"><li>Formato quiz: "¿Cuánto le das?"</li><li>Duelos en tiempo real en Dashboard</li><li>Beto reacciona al resultado semanal</li></ul></div></div>
 </div>
 </div>
 
 <!-- 8 NUEVOS JUEGOS -->
 <div class="S" id="s7">
-<div class="glow gl-p" style="width:400px;height:400px;top:10%;right:5%"></div>
-<div class="tag an a1">Los 5 juegos — Nuevos</div>
-<h2 class="ttl an a2">2 nuevos juegos que completan<br>el ecosistema 🆕</h2>
-<p class="sub an a3">Cubren las dimensiones que faltaban: evolución personal e impacto en métricas reales.</p>
+<div class="glow gl-p" style="width:450px;height:450px;top:8%;right:3%"></div>
+<div class="tag an d0">Los 5 juegos — Nuevos</div>
+<h2 class="ttl an-b d1">2 nuevos juegos que completan<br>el ecosistema 🆕</h2>
+<p class="sub an d2">Cubren las dimensiones que faltaban: evolución personal e impacto en métricas reales.</p>
 <div class="gr g2">
-<div class="gm an a4" style="border-color:rgba(255,64,129,0.15)"><div class="gmh" style="background:rgba(255,64,129,0.02)"><div class="gmn">04</div><span class="badge bp">🆕 Nuevo</span><div class="gmna">📈 Del Coaching al Campo</div><div class="gmd">Lo trabajado con tu líder se convierte en tu mayor fortaleza.</div></div><div class="gmb"><div class="gml">🎯 Concepto</div><ul class="sl"><li>1 vez al mes: postula 1 caso donde aplicó algo de coaching</li><li><strong>Gana la mejor transformación de oportunidad</strong></li><li>Cierra el ciclo: Coaching → Práctica → Resultado → Reconocimiento</li><li>Las oportunidades son escalones, no etiquetas</li></ul><div class="gml">📋 Dinámica</div><ul class="il"><li>Rep postula: ¿Qué oportunidad trabajé? → ¿Cómo la apliqué?</li><li>TL confirma que fue trabajada en coaching</li><li>Premio: $10 USD + Pin "Del Coaching al Campo"</li><li>Reconocimiento al TL en la comunicación</li></ul></div></div>
-<div class="gm an a5" style="border-color:rgba(255,64,129,0.15)"><div class="gmh" style="background:rgba(255,64,129,0.02)"><div class="gmn">05</div><span class="badge bp">🆕 Nuevo</span><div class="gmna">💀→⭐ Revertir lo Imposible</div><div class="gmd">Los procesos que todos temen son donde más brilla el Estilo MeLi.</div></div><div class="gmb"><div class="gml">🎯 Concepto</div><ul class="sl"><li>CDUs históricamente detractores en NPS → convertirlos en promotor</li><li>Cada equipo tiene sus propios procesos difíciles</li><li>Casos ganadores = material de referencia para toda la operación</li><li>Impacta directamente la métrica real de NPS</li></ul><div class="gml">📋 Dinámica</div><ul class="il"><li>Rep postula: ¿Qué proceso? → ¿Por qué es difícil? → ¿Qué hice diferente?</li><li>TL valida proceso desafiante + resultado promotor</li><li>Premio: $10 USD + Pin "Revertir lo Imposible"</li><li>General y escalable para todos los equipos</li></ul></div></div>
+<div class="gm an-l d3" style="border-color:rgba(255,64,129,0.15)"><div class="gmh" style="background:rgba(255,64,129,0.02)"><div class="gmn">04</div><span class="badge bp">🆕 Nuevo</span><div class="gmna">📈 Del Coaching al Campo</div><div class="gmd">Lo trabajado con tu líder se convierte en tu mayor fortaleza.</div></div><div class="gmb"><div class="gml">🎯 Concepto</div><ul class="sl"><li>1 vez al mes: postula 1 caso donde aplicó algo de coaching</li><li><strong>Gana la mejor transformación de oportunidad</strong></li><li>Cierra el ciclo: Coaching → Práctica → Resultado → Reconocimiento</li><li>Las oportunidades son escalones, no etiquetas</li></ul><div class="gml">📋 Dinámica</div><ul class="il"><li>Rep postula: ¿Qué oportunidad trabajé? → ¿Cómo la apliqué?</li><li>TL confirma que fue trabajada en coaching</li><li>Premio: $10 USD + Pin "Del Coaching al Campo"</li><li>Reconocimiento al TL en la comunicación</li></ul></div></div>
+<div class="gm an-r d4" style="border-color:rgba(255,64,129,0.15)"><div class="gmh" style="background:rgba(255,64,129,0.02)"><div class="gmn">05</div><span class="badge bp">🆕 Nuevo</span><div class="gmna">💀→⭐ Revertir lo Imposible</div><div class="gmd">Los procesos que todos temen son donde más brilla el Estilo MeLi.</div></div><div class="gmb"><div class="gml">🎯 Concepto</div><ul class="sl"><li>CDUs históricamente detractores en NPS → convertirlos en promotor</li><li>Cada equipo tiene sus propios procesos difíciles</li><li>Casos ganadores = material de referencia para toda la operación</li><li>Impacta directamente la métrica real de NPS</li></ul><div class="gml">📋 Dinámica</div><ul class="il"><li>Rep postula: ¿Qué proceso? → ¿Por qué es difícil? → ¿Qué hice diferente?</li><li>TL valida proceso desafiante + resultado promotor</li><li>Premio: $10 USD + Pin "Revertir lo Imposible"</li><li>General y escalable para todos los equipos</li></ul></div></div>
 </div>
 </div>
 
 <!-- 9 ECOSISTEMA -->
 <div class="S ctr" id="s8">
-<div class="tag an a1" style="justify-content:center">Visión integrada</div>
-<h2 class="ttl an a2">Cómo conviven<br>los 5 juegos 🧩</h2>
-<p class="sub sub-c an a3">Cada juego toca una dimensión diferente del desarrollo del representante.</p>
-<div class="eg an a4" style="max-width:880px">
+<div class="tag an-s d0" style="justify-content:center">Visión integrada</div>
+<h2 class="ttl an-b d1">Cómo conviven<br>los 5 juegos 🧩</h2>
+<p class="sub sub-c an d2">Cada juego toca una dimensión diferente del desarrollo del representante.</p>
+<div class="eg an d3" style="max-width:880px">
 <div class="ei"><div class="ee">⭐</div><div class="ed" style="color:#FFE600">Técnica</div><div class="en">Viernes con Estilo</div><div class="eq">¿Domino los momentos del Estilo MeLi?</div></div>
 <div class="ei"><div class="ee">🔄</div><div class="ed" style="color:#00C853">Emocional</div><div class="en">Convirtiendo en Promotor</div><div class="eq">¿Puedo revertir la peor situación?</div></div>
 <div class="ei"><div class="ee">🎯</div><div class="ed" style="color:#3483FA">Analítica</div><div class="en">Calibrando a la Operación</div><div class="eq">¿Entiendo qué es una buena atención?</div></div>
@@ -259,33 +313,33 @@ body{font-family:'Inter',sans-serif;background:#08091a;color:#E8E8F0}
 <!-- 10 ANTES DESPUES -->
 <div class="S" id="s9">
 <div class="glow gl-y" style="width:400px;height:400px;bottom:10%;left:50%;transform:translateX(-50%)"></div>
-<div class="tag an a1">Transformación</div>
-<h2 class="ttl an a2">El antes y<br>el después ✨</h2>
-<p class="sub an a3">Misma base, diferente experiencia.</p>
-<div class="cmp an a4">
-<div class="cc bf"><h3>📋 Hoy</h3><div class="ci2">📝 El rep envía su caso el viernes y espera hasta fin de mes</div><div class="ci2">💬 La comunicación es texto con emojis en Slack</div><div class="ci2">💵 El premio son $10 USD sin contexto</div><div class="ci2">👤 El juego se siente individual</div><div class="ci2">📅 Los mejores casos se conocen a fin de mes</div><div class="ci2">🔇 El coaching queda entre el rep y su líder</div><div class="ci2">😰 Los CDUs difíciles se evitan</div></div>
-<div class="cc af"><h3>🚀 Next Level</h3><div class="ci2">⚡ El rep ve su progreso en tiempo real toda la semana</div><div class="ci2">🎨 Las comunicaciones son experiencias visuales con IA</div><div class="ci2">🎁 El premio es una experiencia elegida + un pin para lucir</div><div class="ci2">🤝 El juego se siente como un equipo que vibra junto</div><div class="ci2">⭐ Los mejores momentos se celebran cada lunes</div><div class="ci2">📈 Lo trabajado en coaching se vuelve caso ganador visible</div><div class="ci2">💀→⭐ Los CDUs difíciles son la oportunidad de brillar</div></div>
+<div class="tag an d0">Transformación</div>
+<h2 class="ttl an-b d1">El antes y<br>el después ✨</h2>
+<p class="sub an d2">Misma base, diferente experiencia.</p>
+<div class="cmp">
+<div class="cc bf an-l d3"><h3>📋 Hoy</h3><div class="ci2">📝 El rep envía su caso el viernes y espera hasta fin de mes</div><div class="ci2">💬 La comunicación es texto con emojis en Slack</div><div class="ci2">💵 El premio son $10 USD sin contexto</div><div class="ci2">👤 El juego se siente individual</div><div class="ci2">📅 Los mejores casos se conocen a fin de mes</div><div class="ci2">🔇 El coaching queda entre el rep y su líder</div><div class="ci2">😰 Los CDUs difíciles se evitan</div></div>
+<div class="cc af an-r d4"><h3>🚀 Next Level</h3><div class="ci2">⚡ El rep ve su progreso en tiempo real toda la semana</div><div class="ci2">🎨 Las comunicaciones son experiencias visuales con IA</div><div class="ci2">🎁 El premio es una experiencia elegida + un pin para lucir</div><div class="ci2">🤝 El juego se siente como un equipo que vibra junto</div><div class="ci2">⭐ Los mejores momentos se celebran cada lunes</div><div class="ci2">📈 Lo trabajado en coaching se vuelve caso ganador visible</div><div class="ci2">💀→⭐ Los CDUs difíciles son la oportunidad de brillar</div></div>
 </div>
 </div>
 
 <!-- 11 CIERRE -->
-<div class="S ctr" id="s10">
-<div class="glow gl-y" style="width:500px;height:500px;top:-50px;right:-100px"></div>
-<div class="glow gl-b" style="width:400px;height:400px;bottom:-80px;left:-80px"></div>
-<div class="tag an a1" style="justify-content:center">Implementación</div>
-<h2 class="ttl an a2">¿Qué necesitamos? 🛠️</h2>
-<div class="rg an a3" style="max-width:880px;margin-bottom:36px">
-<div class="ri"><div class="rx">🤖</div><h4>IA Generativa</h4><p>Imágenes, caricaturas, voz Beto</p></div>
-<div class="ri"><div class="rx">📊</div><h4>Dashboard</h4><p>Tracker tiempo real, ranking, duelos</p></div>
-<div class="ri"><div class="rx">🌎</div><h4>Equipos por país</h4><p>3 ideas de premios locales</p></div>
-<div class="ri"><div class="rx">🏅</div><h4>Pines y Stickers</h4><p>Diseño mensual + producción local</p></div>
-<div class="ri"><div class="rx">✅</div><h4>Alineación</h4><p>Coordinación con squad CX Games</p></div>
+<div class="S ctr bgr" id="s10">
+<div class="glow gl-y" style="width:600px;height:600px;top:-80px;right:-150px"></div>
+<div class="glow gl-b" style="width:500px;height:500px;bottom:-100px;left:-100px"></div>
+<div class="tag an-s d0" style="justify-content:center">Implementación</div>
+<h2 class="ttl an d1">¿Qué necesitamos? 🛠️</h2>
+<div class="rg an d2" style="max-width:880px;margin-bottom:36px">
+<div class="ri2"><div class="rx">🤖</div><h4>IA Generativa</h4><p>Imágenes, caricaturas, voz Beto</p></div>
+<div class="ri2"><div class="rx">📊</div><h4>Dashboard</h4><p>Tracker tiempo real, ranking</p></div>
+<div class="ri2"><div class="rx">🌎</div><h4>Equipos por país</h4><p>3 ideas premios locales</p></div>
+<div class="ri2"><div class="rx">🏅</div><h4>Pines & Stickers</h4><p>Diseño mensual + producción</p></div>
+<div class="ri2"><div class="rx">✅</div><h4>Alineación</h4><p>Coordinación squad CX Games</p></div>
 </div>
-<div class="an a5" style="margin-top:16px">
-<div style="font-size:3.5rem;margin-bottom:14px">🐙</div>
-<h2 class="ttl an a6" style="font-size:clamp(1.6rem,3vw,2.5rem);background:linear-gradient(135deg,#FFE600,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">CX Games ya es increíble.<br>Esta propuesta es para que<br>cada rep lo sienta así.</h2>
-<p class="an a7" style="font-size:1rem;color:#8B8EA8;margin-top:10px">Más conexión. Más identidad. Más impacto real.<br><strong style="color:#FFE600;font-size:1.2rem">Let's play. 🎮</strong></p>
-<div class="ha an a8" style="margin-top:20px"><span>Propuesta por</span><strong>Juan Sebastián Guerrero Rodríguez</strong></div>
+<div class="an-s d4" style="margin-top:16px">
+<div style="font-size:3.8rem;margin-bottom:14px" class="float1">🐙</div>
+<h2 class="ttl an-b d5" style="font-size:clamp(1.6rem,3vw,2.5rem);background:linear-gradient(135deg,#FFE600,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">CX Games ya es increíble.<br>Esta propuesta es para que<br>cada rep lo sienta así.</h2>
+<p class="an d6" style="font-size:1rem;color:#8B8EA8;margin-top:10px">Más conexión. Más identidad. Más impacto real.<br><strong style="color:#FFE600;font-size:1.2rem">Let's play. 🎮</strong></p>
+<div class="ha an-s d7" style="margin-top:20px"><span>Propuesta por</span><strong>Juan Sebastián Guerrero Rodríguez</strong></div>
 </div>
 </div>
 
@@ -303,35 +357,66 @@ body{font-family:'Inter',sans-serif;background:#08091a;color:#E8E8F0}
 !function(){
 var S=document.querySelectorAll('.S'),T=S.length,C=0,busy=0;
 var sN=document.getElementById('sN'),sT=document.getElementById('sT');
-var pF=document.getElementById('pF'),bp=document.getElementById('bp'),bn=document.getElementById('bn'),dt=document.getElementById('dt');
+var pF=document.getElementById('pF'),bP=document.getElementById('bp'),bN=document.getElementById('bn'),dt=document.getElementById('dt');
 sT.textContent=T;
 
 // particles
-!function(){var c=document.getElementById('ptc');if(!c)return;var k=['#FFE600','#3483FA','#AA66CC','#00C853','#FF5252'];for(var i=0;i<30;i++){var p=document.createElement('div');p.className='pt';var z=Math.random()*6+3;p.style.cssText='width:'+z+'px;height:'+z+'px;background:'+k[i%5]+';left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;animation-delay:'+Math.random()*15+'s;animation-duration:'+(Math.random()*10+12)+'s';c.appendChild(p)}}();
+!function(){var c=document.getElementById('ptc');if(!c)return;var k=['#FFE600','#3483FA','#AA66CC','#00C853','#FF5252','#FF4081','#00E5FF'];for(var i=0;i<40;i++){var p=document.createElement('div');p.className='pt';var z=Math.random()*7+2;var dur=Math.random()*12+10;p.style.cssText='width:'+z+'px;height:'+z+'px;background:'+k[i%7]+';left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;--dur:'+dur+'s;animation-delay:'+Math.random()*15+'s';c.appendChild(p)}}();
 
 // dots
 for(var i=0;i<T;i++){var d=document.createElement('div');d.className='dot'+(i?'':' on');d.setAttribute('data-i',i);d.onclick=function(){go(+this.getAttribute('data-i'))};dt.appendChild(d)}
 var dots=dt.children;
 
+// counter animation
+function animC(){
+var targets=[{el:document.getElementById('c1'),t:800,suf:'+'},{el:document.getElementById('c2'),t:5,suf:''},{el:document.getElementById('c3'),t:3,suf:''}];
+targets.forEach(function(o){
+var cur=0,steps=60,inc=o.t/steps,frame=0;
+var iv=setInterval(function(){
+frame++;cur+=inc;
+if(frame>=steps){o.el.textContent=o.t+o.suf;clearInterval(iv)}
+else o.el.textContent=Math.floor(cur)+(o.t>=100?'+':'');
+},25);
+});
+}
+
 function go(n){
 if(n===C||busy||n<0||n>=T)return;
 busy=1;
+var dir=n>C?1:-1;
+// reset anims on target
+var anEls=S[n].querySelectorAll('.an,.an-l,.an-r,.an-s,.an-b,.an-f,.an-ru');
+for(var i=0;i<anEls.length;i++){
+anEls[i].style.transition='none';
+// force reset
+void anEls[i].offsetWidth;
+anEls[i].style.transition='';
+}
+// exit current
 S[C].classList.remove('on');
+S[C].classList.add(dir>0?'out-l':'out-r');
+// enter new
 S[n].classList.add('on');
+// counters on hero
+if(n===0)setTimeout(animC,400);
+setTimeout(function(){
+S[C===n?0:C].classList.remove('out-l','out-r');
 C=n;
 upd();
-setTimeout(function(){busy=0},500);
+busy=0;
+},650);
+C=n;upd();
 }
 
 function upd(){
 sN.textContent=C+1;
 pF.style.width=((C+1)/T*100)+'%';
-bp.disabled=C===0;bn.disabled=C===T-1;
+bP.disabled=C===0;bN.disabled=C===T-1;
 for(var i=0;i<T;i++)dots[i].className=i===C?'dot on':'dot';
 }
 
-bp.onclick=function(){go(C-1)};
-bn.onclick=function(){go(C+1)};
+bP.onclick=function(){go(C-1)};
+bN.onclick=function(){go(C+1)};
 
 document.onkeydown=function(e){
 if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(C+1)}
@@ -344,8 +429,39 @@ var tx=0;
 document.addEventListener('touchstart',function(e){tx=e.changedTouches[0].screenX},{passive:1});
 document.addEventListener('touchend',function(e){var d=e.changedTouches[0].screenX-tx;if(Math.abs(d)>50){d<0?go(C+1):go(C-1)}},{passive:1});
 
-var wt;document.addEventListener('wheel',function(e){e.preventDefault();clearTimeout(wt);wt=setTimeout(function(){e.deltaY>20?go(C+1):e.deltaY<-20?go(C-1):0},100)},{passive:0});
+var wt;document.addEventListener('wheel',function(e){e.preventDefault();clearTimeout(wt);wt=setTimeout(function(){e.deltaY>20?go(C+1):e.deltaY<-20?go(C-1):0},120)},{passive:0});
 
+// card glow follow mouse
+document.querySelectorAll('.cd').forEach(function(cd){
+cd.addEventListener('mousemove',function(e){
+var r=cd.getBoundingClientRect();
+cd.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+cd.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
+});
+});
+
+// card tilt
+document.querySelectorAll('.cd,.gm').forEach(function(c){
+c.addEventListener('mousemove',function(e){
+var r=c.getBoundingClientRect();
+var x=(e.clientX-r.left)/r.width-.5;
+var y=(e.clientY-r.top)/r.height-.5;
+c.style.transform='perspective(600px) rotateX('+(-y*8)+'deg) rotateY('+(x*8)+'deg) translateY(-4px)';
+});
+c.addEventListener('mouseleave',function(){c.style.transform=''});
+});
+
+// parallax glows on mouse
+document.addEventListener('mousemove',function(e){
+var x=(e.clientX/window.innerWidth-.5)*30;
+var y=(e.clientY/window.innerHeight-.5)*30;
+document.querySelectorAll('.glow').forEach(function(g){
+g.style.transform=g.style.transform?g.style.transform.replace(/translate\([^)]+\)/,'translate('+x+'px,'+y+'px)'):'translate('+x+'px,'+y+'px)';
+});
+});
+
+// init
+animC();
 upd();
 }();
 </script>
